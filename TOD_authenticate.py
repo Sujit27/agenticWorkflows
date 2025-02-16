@@ -63,19 +63,6 @@ def call_llm(state: StateSchema):
     response = llm_to_collect_info.invoke(messages)
     return {"messages": [response]}
 
-def finalize_dialogue(state: StateSchema):
-    """
-    Add a tool message to the history so the graph can see that it`s time to autheticate
-    """
-    return {
-        "messages": [
-            ToolMessage(
-                content="Prompt generated!",
-                tool_call_id=state["messages"][-1].tool_calls[0]["id"],
-            )
-        ]
-    }
-
 def build_prompt_to_generate_user_story(messages: list):
     tool_call = None
     other_msgs = []
@@ -88,27 +75,24 @@ def build_prompt_to_generate_user_story(messages: list):
             other_msgs.append(m)
     return [SystemMessage(content=prompt_authenticate.format(reqs=tool_call,user_info=user_info))] + other_msgs
 
-
 def call_model_to_generate_user_story(state):
     messages = build_prompt_to_generate_user_story(state["messages"])
     response = llm_to_authenticate.invoke(messages)
     return {"messages": [response]}
 
-def define_next_action(state) -> Literal["finalize_dialogue", END]:
+def define_next_action(state) -> Literal["authenticate_user", END]:
     messages = state["messages"]
 
     if isinstance(messages[-1], AIMessage) and messages[-1].tool_calls:
-        return "finalize_dialogue"
+        return "authenticate_user"
     else:
         return END
 
 workflow = StateGraph(StateSchema)
 workflow.add_node("talk_to_user", call_llm)
 workflow.add_edge(START, "talk_to_user")
-workflow.add_node("finalize_dialogue", finalize_dialogue)
 workflow.add_node("authenticate_user", call_model_to_generate_user_story)
 workflow.add_conditional_edges("talk_to_user", define_next_action)
-workflow.add_edge("finalize_dialogue", "authenticate_user")
 workflow.add_edge("authenticate_user", END)
 
 memory = MemorySaver()
