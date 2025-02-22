@@ -16,6 +16,7 @@ from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
 
 from prompt import prompt_system_task, prompt_authenticate
+from utility import create_db_connection, execute_query, read_query, get_dict_by_policy_num
 
 
 os.environ["OPENAI_API_KEY"] = "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"
@@ -24,9 +25,12 @@ os.environ['LANGSMITH_ENDPOINT'] = "https://api.smith.langchain.com"
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_PROJECT"] = "pr-authorized-someplace-95"
 
+connection = create_db_connection("localhost", "root", "weakPassword@123","user")
+
 
 class StateSchema(TypedDict):
     messages: Annotated[list, add_messages]
+    user_authenticated: bool
 
 class AuthenticationProfile(BaseModel):
     """Information about authentication fields"""
@@ -49,7 +53,7 @@ llm = ChatOpenAI(
     max_retries=2,
 )
 
-user_info = {"policy_number":"0123456789","last_name":"Sahoo","date_of_birth":"27 Dec 1990"}
+# user_info = {"policy_number":"0123456789","last_name":"Sahoo","date_of_birth":"27 Dec 1990"}
 
 llm_to_collect_info = llm.bind_tools([AuthenticationProfile])
 llm_to_authenticate = llm.bind_tools([ResponseFormatter])
@@ -63,21 +67,28 @@ def call_llm(state: StateSchema):
     response = llm_to_collect_info.invoke(messages)
     return {"messages": [response]}
 
-def build_prompt_to_generate_user_story(messages: list):
+def build_prompt_to_authenticate(messages: list):
     tool_call = None
+    user_info = None
     other_msgs = []
     for m in messages:
         if isinstance(m, AIMessage) and m.tool_calls: #tool_calls is from the OpenAI API
             tool_call = m.tool_calls[0]["args"]
+            policy_num = m.tool_calls[0]["args"]['policy_number']
+            user_info = get_dict_by_policy_num(connection,policy_num)
         elif isinstance(m, ToolMessage):
             continue
         elif tool_call is not None:
             other_msgs.append(m)
     return [SystemMessage(content=prompt_authenticate.format(reqs=tool_call,user_info=user_info))] + other_msgs
 
-def call_model_to_generate_user_story(state):
-    messages = build_prompt_to_generate_user_story(state["messages"])
+def call_model_to_authenticate(state):
+    messages = build_prompt_to_authenticate(state["messages"])
     response = llm_to_authenticate.invoke(messages)
+    if response.tool_calls[0]["args"]['answer']==True:
+        state["user_authenticated"]=1
+    elif response.tool_calls[0]["args"]['answer']==False:
+        state["user_authenticated"]=0
     return {"messages": [response]}
 
 def define_next_action(state) -> Literal["authenticate_user", END]:
@@ -91,7 +102,7 @@ def define_next_action(state) -> Literal["authenticate_user", END]:
 workflow = StateGraph(StateSchema)
 workflow.add_node("talk_to_user", call_llm)
 workflow.add_edge(START, "talk_to_user")
-workflow.add_node("authenticate_user", call_model_to_generate_user_story)
+workflow.add_node("authenticate_user", call_model_to_authenticate)
 workflow.add_conditional_edges("talk_to_user", define_next_action)
 workflow.add_edge("authenticate_user", END)
 
@@ -111,6 +122,7 @@ while True:
         last_message = next(iter(output.values()))["messages"][-1]
         last_message.pretty_print()
 
+    # print(graph.get_state(config))
     if last_message.tool_calls:
         if last_message.tool_calls[0]['args']['answer'] == True:
             print("User Authenticated!")
