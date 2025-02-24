@@ -15,7 +15,7 @@ from typing import List, Literal, Annotated
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
 
-from prompt import prompt_system_task, prompt_authenticate
+from prompt import prompt_system_task, prompt_auth_task, prompt_compare_data
 from utility import create_db_connection, execute_query, read_query, get_dict_by_policy_num
 
 
@@ -27,10 +27,11 @@ os.environ["LANGCHAIN_PROJECT"] = "pr-authorized-someplace-95"
 
 connection = create_db_connection("localhost", "root", "weakPassword@123","user")
 
-
-class StateSchema(TypedDict):
+class StateSchema(BaseModel):
     messages: Annotated[list, add_messages]
-    user_authenticated: bool
+    user_authenticated: bool = Field(default=0, description="Whether user has been authenticated")
+    user_policy_number: int = Field(default=None, description="policy number of the user")
+    user_first_name: str = Field(default=None, description="first name of the user")
 
 class AuthenticationProfile(BaseModel):
     """Information about authentication fields"""
@@ -40,10 +41,13 @@ class AuthenticationProfile(BaseModel):
 
 class ResponseFormatter(BaseModel):
     """Always use this tool to structure the output"""
-    answer: bool = Field(description="True or False depending if user authentication was successful or not")
+    answer: bool = Field(description="1 or 0 depending if actual and extracted fields matched or not")
 
-def domain_state_tracker(messages):
-    return [SystemMessage(content=prompt_system_task)] + messages
+def domain_state_tracker(messages,user_authenticated):
+    if user_authenticated==1:
+        return [SystemMessage(content=prompt_system_task)] + messages
+    else:
+        return [SystemMessage(content=prompt_system_task + prompt_auth_task)] + messages
 
 llm = ChatOpenAI(
     model="gpt-4o",
@@ -51,20 +55,25 @@ llm = ChatOpenAI(
     max_tokens=None,
     timeout=None,
     max_retries=2,
+    
 )
 
 # user_info = {"policy_number":"0123456789","last_name":"Sahoo","date_of_birth":"27 Dec 1990"}
 
-llm_to_collect_info = llm.bind_tools([AuthenticationProfile])
-llm_to_authenticate = llm.bind_tools([ResponseFormatter])
+llm_to_authenticate = llm.bind_tools([AuthenticationProfile])
+llm_to_compare_data = llm.bind_tools([ResponseFormatter])
+
 
 def call_llm(state: StateSchema):
     """
     talk_to_user node function, adds the prompt_system_task to the messages,
     calls the LLM and returns the response
     """
-    messages = domain_state_tracker(state["messages"])
-    response = llm_to_collect_info.invoke(messages)
+    messages = domain_state_tracker(state.messages,state.user_authenticated)
+    if state.user_authenticated==1:
+        response = llm.invoke(messages)
+    else:
+        response = llm_to_authenticate.invoke(messages)
     return {"messages": [response]}
 
 def build_prompt_to_authenticate(messages: list):
@@ -80,19 +89,19 @@ def build_prompt_to_authenticate(messages: list):
             continue
         elif tool_call is not None:
             other_msgs.append(m)
-    return [SystemMessage(content=prompt_authenticate.format(reqs=tool_call,user_info=user_info))] + other_msgs
+    return [SystemMessage(content=prompt_compare_data.format(reqs=tool_call,user_info=user_info))] + other_msgs, user_info
 
 def call_model_to_authenticate(state):
-    messages = build_prompt_to_authenticate(state["messages"])
-    response = llm_to_authenticate.invoke(messages)
+    messages, user_info = build_prompt_to_authenticate(state.messages)
+    response = llm_to_compare_data.invoke(messages)
     if response.tool_calls[0]["args"]['answer']==True:
-        state["user_authenticated"]=1
-    elif response.tool_calls[0]["args"]['answer']==False:
-        state["user_authenticated"]=0
-    return {"messages": [response]}
+        return {"messages": [response],"user_authenticated":1,"user_policy_number":\
+            user_info["policy_number"],"user_first_name":user_info["first_name"]}
+    else:
+        return {"messages": [response]}
 
 def define_next_action(state) -> Literal["authenticate_user", END]:
-    messages = state["messages"]
+    messages = state.messages
 
     if isinstance(messages[-1], AIMessage) and messages[-1].tool_calls:
         return "authenticate_user"
@@ -114,7 +123,7 @@ config = {"configurable": {"thread_id": str(uuid.uuid4())}}
 while True:
     user = input("User (q/Q to quit): ")
     if user in {"q", "Q"}:
-        print("User NOT Authenticated!")
+        print("Conversation Terminated by User!")
         break
     output = None
     for output in graph.stream({"messages": [HumanMessage(content=user)]}, config=config, stream_mode="updates"):
@@ -122,13 +131,7 @@ while True:
         last_message = next(iter(output.values()))["messages"][-1]
         last_message.pretty_print()
 
-    # print(graph.get_state(config))
-    if last_message.tool_calls:
-        if last_message.tool_calls[0]['args']['answer'] == True:
-            print("User Authenticated!")
-        elif last_message.tool_calls[0]['args']['answer'] == False:
-            print("User NOT Authenticated!")
-        break
+    
     
 
 
