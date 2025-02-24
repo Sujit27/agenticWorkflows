@@ -18,9 +18,11 @@ from langgraph.checkpoint.memory import MemorySaver
 from prompt import prompt_system_task, prompt_auth_task, prompt_compare_data
 from utility import create_db_connection, execute_query, read_query, get_dict_by_policy_num
 
+from api_keys import openai_api_key,langsmith_api_key
 
-os.environ["OPENAI_API_KEY"] = "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"
-os.environ["LANGSMITH_API_KEY"] = "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"
+
+os.environ["OPENAI_API_KEY"] = openai_api_key
+os.environ["LANGSMITH_API_KEY"] = langsmith_api_key
 os.environ['LANGSMITH_ENDPOINT'] = "https://api.smith.langchain.com"
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_PROJECT"] = "pr-authorized-someplace-95"
