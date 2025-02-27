@@ -39,8 +39,8 @@ actual fields: {user_info}
 
 # OUTPUT INSTRUCTION
 If the actual fields match with extracted fields as per the GUIDELINES, 
-     RETURN 1.
+     RETURN True
 Else
-     RETURN 0.
+     RETURN False
 DO NOT return anything else.
 """

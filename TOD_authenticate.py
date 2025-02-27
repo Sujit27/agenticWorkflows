@@ -4,13 +4,15 @@
 import uuid
 import getpass
 import os
+import json
 
 from langgraph.graph.message import add_messages
 from typing import TypedDict, Annotated
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage, ToolMessage
+from langchain_core.tools import tool
 
 from langchain_openai import ChatOpenAI
-from langchain_core.pydantic_v1 import BaseModel, Field
+from pydantic import BaseModel,Field
 from typing import List, Literal, Annotated
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
@@ -31,11 +33,12 @@ connection = create_db_connection("localhost", "root", "weakPassword@123","user"
 
 class StateSchema(BaseModel):
     messages: Annotated[list, add_messages]
-    user_authenticated: bool = Field(default=0, description="Whether user has been authenticated")
+    user_provided_auth_fields: dict = Field(default=None, description="The authentication fields provided by the user")
+    user_authenticated: int = Field(default=0, description="Whether user has been authenticated")
     user_policy_number: int = Field(default=None, description="policy number of the user")
     user_first_name: str = Field(default=None, description="first name of the user")
 
-class AuthenticationProfile(BaseModel):
+class Authentication(BaseModel):
     """Information about authentication fields"""
     policy_number: str = Field(default=None, description="The policy number of the user")
     last_name: str = Field(default=None, description="The last name of the user")
@@ -43,7 +46,20 @@ class AuthenticationProfile(BaseModel):
 
 class ResponseFormatter(BaseModel):
     """Always use this tool to structure the output"""
-    answer: bool = Field(description="1 or 0 depending if actual and extracted fields matched or not")
+    answer: str = Field(description="True or False depending if user authentication was successful or not")
+
+@tool
+def authentication(policy_number: str,last_name: str,date_of_birth: str):
+    """Gets user authetication information from database given a policy number"""
+    provided_user_info = {"policy_number":policy_number,"last_name":last_name,"date_of_birth":date_of_birth}
+    actual_user_info = get_dict_by_policy_num(connection,policy_number)
+    return actual_user_info
+
+# @tool
+# def authentication(**kwargs):
+#     """Gets user authetication information from database given a policy number"""
+#     actual_user_info = get_dict_by_policy_num(connection,kwargs.get("policy_number"))
+#     return actual_user_info
 
 def domain_state_tracker(messages,user_authenticated):
     if user_authenticated==1:
@@ -60,10 +76,11 @@ llm = ChatOpenAI(
     
 )
 
-# user_info = {"policy_number":"0123456789","last_name":"Sahoo","date_of_birth":"27 Dec 1990"}
+tools = [authentication]
+tool_dict = {"authentication":authentication}
 
-llm_to_authenticate = llm.bind_tools([AuthenticationProfile])
-llm_to_compare_data = llm.bind_tools([ResponseFormatter])
+llm_to_authenticate = llm.bind_tools(tools)
+llm_to_compare_data = llm.with_structured_output(ResponseFormatter)
 
 
 def call_llm(state: StateSchema):
@@ -72,50 +89,51 @@ def call_llm(state: StateSchema):
     calls the LLM and returns the response
     """
     messages = domain_state_tracker(state.messages,state.user_authenticated)
-    if state.user_authenticated==1:
-        response = llm.invoke(messages)
-    else:
-        response = llm_to_authenticate.invoke(messages)
+    response = llm_to_authenticate.invoke(messages)
     return {"messages": [response]}
 
-def build_prompt_to_authenticate(messages: list):
-    tool_call = None
-    user_info = None
-    other_msgs = []
-    for m in messages:
-        if isinstance(m, AIMessage) and m.tool_calls: #tool_calls is from the OpenAI API
-            tool_call = m.tool_calls[0]["args"]
-            policy_num = m.tool_calls[0]["args"]['policy_number']
-            user_info = get_dict_by_policy_num(connection,policy_num)
-        elif isinstance(m, ToolMessage):
-            continue
-        elif tool_call is not None:
-            other_msgs.append(m)
-    return [SystemMessage(content=prompt_compare_data.format(reqs=tool_call,user_info=user_info))] + other_msgs, user_info
+def finalize_dialogue(state: StateSchema):
+    """
+    Add a tool message to the history so the graph can see that it`s time to autheticate
+    """
+    print("Tool called")
+    tool_selected = state.messages[-1].tool_calls[0]
+    tool_runnable = tool_dict[tool_selected['name'].lower()]
+    tool_output = tool_runnable.invoke(tool_selected["args"])
+    tool_message = ToolMessage(tool_output,tool_call_id=tool_selected["id"])
+    return {"messages": [tool_message],"user_provided_auth_fields":tool_selected["args"]}
 
-def call_model_to_authenticate(state):
-    messages, user_info = build_prompt_to_authenticate(state.messages)
-    response = llm_to_compare_data.invoke(messages)
-    if response.tool_calls[0]["args"]['answer']==True:
-        return {"messages": [response],"user_authenticated":1,"user_policy_number":\
-            user_info["policy_number"],"user_first_name":user_info["first_name"]}
+
+def call_model_to_authenticate(state: StateSchema):
+    tool_message = state.messages[-1]
+    user_provided_info = state.user_provided_auth_fields
+    user_db_info = eval(tool_message.content)
+    compare_data_prompt = [SystemMessage(content=prompt_compare_data.format(reqs=user_provided_info,user_info=user_db_info))]
+    response = llm_to_compare_data.invoke(compare_data_prompt)
+    if response.answer.lower()=='true':
+        return {"messages": [AIMessage(content=response.answer)],"user_authenticated":1,"user_policy_number":\
+            user_db_info["policy_number"],"user_first_name":user_db_info["first_name"]}
     else:
-        return {"messages": [response]}
+        return {"messages": [AIMessage(content=response.answer)]}
+    
 
-def define_next_action(state) -> Literal["authenticate_user", END]:
+def define_next_action(state) -> Literal["finalize_dialogue", END]:
     messages = state.messages
 
     if isinstance(messages[-1], AIMessage) and messages[-1].tool_calls:
-        return "authenticate_user"
+        return "finalize_dialogue"
     else:
         return END
 
 workflow = StateGraph(StateSchema)
 workflow.add_node("talk_to_user", call_llm)
 workflow.add_edge(START, "talk_to_user")
-workflow.add_node("authenticate_user", call_model_to_authenticate)
+workflow.add_node("finalize_dialogue", finalize_dialogue)
 workflow.add_conditional_edges("talk_to_user", define_next_action)
+workflow.add_node("authenticate_user", call_model_to_authenticate)
+workflow.add_edge("finalize_dialogue", "authenticate_user")
 workflow.add_edge("authenticate_user", END)
+# workflow.add_edge("talk_to_user", END)
 
 memory = MemorySaver()
 graph = workflow.compile(checkpointer=memory)
