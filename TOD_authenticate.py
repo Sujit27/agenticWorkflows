@@ -18,8 +18,7 @@ from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
 
 from prompt import prompt_system_task, prompt_auth_task, prompt_compare_data, prompt_payment_status_task
-from utility import create_db_connection, execute_query, read_query, \
-    get_acc_dict_by_acc_num, get_credit_dict_by_acc_num
+from utility import load_data_files,get_user_info_by_acc
 
 from api_keys import openai_api_key,langsmith_api_key
 
@@ -30,7 +29,12 @@ os.environ['LANGSMITH_ENDPOINT'] = "https://api.smith.langchain.com"
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_PROJECT"] = "pr-authorized-someplace-95"
 
-connection = create_db_connection("localhost", "root", "weakPassword@123","user")
+account_information_file_path = "accountInformation.csv"
+credit_card_file_path = "creditCard.csv"
+df_array = load_data_files(account_information_file_path,credit_card_file_path)
+df_accountInformation = df_array[0]
+df_creditCard = df_array[1]
+print("User Database Loaded !")
 
 class StateSchema(BaseModel):
     messages: Annotated[list, add_messages]
@@ -41,7 +45,7 @@ class StateSchema(BaseModel):
 
 class Authentication(BaseModel):
     """Information about authentication fields"""
-    account_number: str = Field(default=None, description="The policy number of the user")
+    account_number: int = Field(default=None, description="The policy number of the user")
     last_name: str = Field(default=None, description="The last name of the user")
     date_of_birth: str = Field(default=None, description="The date of birth of the user")
 
@@ -50,24 +54,12 @@ class ResponseFormatter(BaseModel):
     answer: str = Field(description="True or False depending if user authentication was successful or not")
 
 @tool
-def authentication(account_number: str,last_name: str,date_of_birth: str):
+def authentication(account_number: int,last_name: str,date_of_birth: str):
     """Gets user authetication information from database given a policy number"""
     provided_user_info = {"account_number":account_number,"last_name":last_name,"date_of_birth":date_of_birth}
-    actual_user_info = get_acc_dict_by_acc_num(connection,account_number)
+    actual_user_info = get_user_info_by_acc(df_accountInformation,account_number)
     return actual_user_info
 
-# @tool
-# def authentication(**kwargs):
-#     """Gets user authetication information from database given a policy number"""
-#     actual_user_info = get_acc_dict_by_acc_num(connection,kwargs.get("account_number"))
-#     return actual_user_info
-
-# def domain_state_tracker(messages,user_authenticated,user_payment_fields):
-#     if user_authenticated==1:
-#         return [SystemMessage(content=prompt_system_task + \
-#             prompt_payment_status_task.format(user_payment_info=user_payment_fields))] + messages
-#     else:
-#         return [SystemMessage(content=prompt_system_task + prompt_auth_task)] + messages
 
 llm = ChatOpenAI(
     model="gpt-4o",
@@ -119,7 +111,8 @@ def call_model_to_authenticate(state: StateSchema):
     compare_data_prompt = [SystemMessage(content=prompt_compare_data.format(reqs=user_provided_info,user_info=user_db_info))]
     response = llm_to_compare_data.invoke(compare_data_prompt)
     if response.answer.lower()=='true':
-        user_payment_fields = get_credit_dict_by_acc_num(connection,user_db_info["account_number"])
+        account_number = int(user_db_info["account_number"])
+        user_payment_fields = get_user_info_by_acc(df_creditCard,account_number)
         return {"messages": [AIMessage(content=response.answer)],"user_authenticated":1,
                 "user_payment_fields":user_payment_fields,"user_account_fields":user_db_info}
     else:
