@@ -17,7 +17,9 @@ from typing import List, Literal, Annotated
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
 
-from prompt import prompt_system_task, prompt_auth_task, prompt_compare_data, prompt_payment_status_task
+from prompt import prompt_system_task, prompt_auth_task, prompt_compare_data,\
+     prompt_payment_status_task, prompt_process_identification_task,\
+        prompt_make_payment_task,prompt_update_address_task
 from utility import load_data_files,get_user_info_by_acc
 
 from api_keys import openai_api_key,langsmith_api_key
@@ -42,16 +44,21 @@ class StateSchema(BaseModel):
     user_authenticated: int = Field(default=0, description="Whether user has been authenticated")
     user_account_fields: dict = Field(default=None, description="The account fields extracted for the user from database")
     user_payment_fields: dict = Field(default=None, description="The payment fields extracted for the user from database")
+    current_process_identified: int = Field(default=None, description="The process category identified from user query")
 
-class Authentication(BaseModel):
-    """Information about authentication fields"""
-    account_number: int = Field(default=None, description="The policy number of the user")
-    last_name: str = Field(default=None, description="The last name of the user")
-    date_of_birth: str = Field(default=None, description="The date of birth of the user")
+# class Authentication(BaseModel):
+#     """Information about authentication fields"""
+#     account_number: int = Field(default=None, description="The policy number of the user")
+#     last_name: str = Field(default=None, description="The last name of the user")
+#     date_of_birth: str = Field(default=None, description="The date of birth of the user")
 
-class ResponseFormatter(BaseModel):
-    """Always use this tool to structure the output"""
-    answer: str = Field(description="True or False depending if user authentication was successful or not")
+class DataCompare(BaseModel):
+    """Compare data fields to check if they match"""
+    answer: str = Field(description="True or False depending if the data fields' was successful or not")
+
+class ProcessIdentify(BaseModel):
+    """Identify the right process category according to user request"""
+    processIdentified: int = Field(description="1,2 or 3 depending on the process Category identified")
 
 @tool
 def authentication(account_number: int,last_name: str,date_of_birth: str):
@@ -74,7 +81,22 @@ tools = [authentication]
 tool_dict = {"authentication":authentication}
 
 llm_to_authenticate = llm.bind_tools(tools)
-llm_to_compare_data = llm.with_structured_output(ResponseFormatter)
+llm_to_compare_data = llm.with_structured_output(DataCompare)
+llm_to_identify_process = llm.with_structured_output(ProcessIdentify)
+
+def identify_process(state: StateSchema):
+    """
+    Identify the category of the current process to be followed based on the past conversation and latest user utterance
+    """
+    if state.user_authenticated!=1:
+        process_identified=0
+    else:
+        messages = [SystemMessage(content=prompt_system_task + \
+            prompt_process_identification_task)] + state.messages
+        process_identified = llm_to_identify_process.invoke(messages).processIdentified
+
+    return {"messages": [AIMessage(content=str(process_identified))],\
+        "current_process_identified":process_identified}
 
 
 def call_llm(state: StateSchema):
@@ -83,16 +105,28 @@ def call_llm(state: StateSchema):
     calls the LLM and returns the response
     """
     if state.user_authenticated==1:
-        messages = [SystemMessage(content=prompt_system_task + \
-            prompt_payment_status_task.format(user_credit_card_info=state.user_payment_fields,\
-                user_account_info=state.user_account_fields))] + state.messages
+        if state.current_process_identified==1:
+            messages = [SystemMessage(content=prompt_system_task + \
+                prompt_payment_status_task.format(user_credit_card_info=state.user_payment_fields,\
+                    user_account_info=state.user_account_fields))] + state.messages
+        elif state.current_process_identified==2:
+            messages = [SystemMessage(content=prompt_system_task + \
+                prompt_make_payment_task.format(user_credit_card_info=state.user_payment_fields,\
+                    ))] + state.messages
+        elif state.current_process_identified==3:
+            messages = [SystemMessage(content=prompt_system_task + \
+                prompt_update_address_task,\
+                    )] + state.messages
+        else:
+            messages = [SystemMessage(content=prompt_system_task + \
+                prompt_payment_status_task.format(user_credit_card_info=state.user_payment_fields,\
+                    user_account_info=state.user_account_fields))] + state.messages
     else:
         messages = [SystemMessage(content=prompt_system_task + prompt_auth_task)] + state.messages
-    # messages = domain_state_tracker(state.messages,state.user_authenticated,state.user_payment_fields)
-    response = llm_to_authenticate.invoke(messages)
+    response = llm_to_authenticate.invoke(messages)    
     return {"messages": [response]}
 
-def finalize_dialogue(state: StateSchema):
+def invoke_tool(state: StateSchema):
     """
     Add a tool message to the history so the graph can see that it`s time to autheticate
     """
@@ -117,24 +151,35 @@ def call_model_to_authenticate(state: StateSchema):
                 "user_payment_fields":user_payment_fields,"user_account_fields":user_db_info}
     else:
         return {"messages": [AIMessage(content=response.answer)]}
-    
 
-def define_next_action(state) -> Literal["finalize_dialogue", END]:
+def response_generator(state: StateSchema):
+    messages = [SystemMessage(content=prompt_system_task + \
+            prompt_payment_status_task.format(user_credit_card_info=state.user_payment_fields,\
+                user_account_info=state.user_account_fields))] + state.messages
+    response = llm.invoke(messages)
+    return {"messages": [response]}
+
+def define_next_action(state) -> Literal["invoke_tool", END]:
     messages = state.messages
 
     if isinstance(messages[-1], AIMessage) and messages[-1].tool_calls:
-        return "finalize_dialogue"
+        return "invoke_tool"
     else:
         return END
 
 workflow = StateGraph(StateSchema)
+workflow.add_node("identify_process", identify_process)
+workflow.add_edge(START, "identify_process")
 workflow.add_node("talk_to_user", call_llm)
-workflow.add_edge(START, "talk_to_user")
-workflow.add_node("finalize_dialogue", finalize_dialogue)
+workflow.add_edge("identify_process", "talk_to_user")
+# workflow.add_edge(START, "talk_to_user")
+workflow.add_node("invoke_tool", invoke_tool)
 workflow.add_conditional_edges("talk_to_user", define_next_action)
 workflow.add_node("authenticate_user", call_model_to_authenticate)
-workflow.add_edge("finalize_dialogue", "authenticate_user")
-workflow.add_edge("authenticate_user", END)
+workflow.add_edge("invoke_tool", "authenticate_user")
+workflow.add_node("response_generator",response_generator)
+workflow.add_edge("authenticate_user", "response_generator")
+workflow.add_edge("response_generator", END)
 # workflow.add_edge("talk_to_user", END)
 
 memory = MemorySaver()
