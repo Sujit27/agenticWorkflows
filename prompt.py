@@ -38,10 +38,11 @@ user credit card info : {user_credit_card_info}
 ## GUIDELINES:
 *If the user provides any other value, specify that you can only make payment for the full amount or minimum payable amount,
 no other amount is possible.
+*If the user's payment amount due is None,DO NOT proceed with bill payment. Inform the user accordingly.
 
 # OUTPUT INSTRUCTION
 *For making payment: When you are able to get the full or minimum amont confirmed from the user, 
-call the relevant tool to pay the credit card bill.
+call the relevant tool to pay the credit card bill.Return 'FULL' or 'MIN' accordingly as parameter value.
 """
 
 prompt_update_address_task = """
