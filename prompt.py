@@ -73,7 +73,8 @@ Fields : account number, last name, date of birth
 ## GUIDELINES:
 *Ask the user for authentication fields. 
 *If the user does not provide value for a field after repeated requests, let them know you would not be able to proceed further without it.
-*
+*Do not ask the user to provide date of birth only in a specific format.
+*Ask the user for required fields in a sentence only and never in numbered or bullet format.
 
 # OUTPUT INSTRUCTION
 *For authentication: When you are able to get all the 3 authentication fields from the user, call the relevant tool to authenticate the user.
@@ -96,8 +97,8 @@ actual fields: {user_info}
 
 # OUTPUT INSTRUCTION
 If the actual fields match with extracted fields as per the GUIDELINES, 
-     RETURN True
+     RETURN 1
 Else
-     RETURN False
+     RETURN 0
 DO NOT return anything else.
 """

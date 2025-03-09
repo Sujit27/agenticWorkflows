@@ -56,7 +56,7 @@ class StateSchema(BaseModel):
 
 class DataCompare(BaseModel):
     """Compare data fields to check if they match"""
-    answer: str = Field(description="True or False depending if the data fields' was successful or not")
+    answer: int = Field(description="1 or 0 depending if the data fields' was successful or not")
 
 class ProcessIdentify(BaseModel):
     """Identify the right process category according to user request"""
@@ -85,7 +85,7 @@ def authentication(account_number: int,last_name: str,date_of_birth: str):
     actual_user_info = get_user_info_by_acc(df_accountInformation,account_number)
     compare_data_prompt = [SystemMessage(content=prompt_compare_data.format(reqs=provided_user_info,user_info=actual_user_info))]
     response = llm_to_compare_data.invoke(compare_data_prompt)
-    return response.answer.lower(),actual_user_info
+    return int(response.answer),actual_user_info
 
 
 tools = [authentication,makePayment,updateAddress]
@@ -145,7 +145,7 @@ def execute_tool(state: StateSchema):
         tool_runnable = tool_dict[tool_selected['name']]
         is_authenticated,user_db_info = tool_runnable.invoke(tool_selected["args"])
         tool_message = ToolMessage(is_authenticated,tool_call_id=tool_selected["id"])
-        if is_authenticated=='true':
+        if is_authenticated==1:
             user_payment_fields = get_user_info_by_acc(df_creditCard,user_db_info["account_number"])
             return {"messages": [tool_message],"user_authenticated":1,\
                 "user_payment_fields":user_payment_fields,"user_account_fields":user_db_info}
@@ -205,9 +205,16 @@ while True:
         break
     output = None
     for output in graph.stream({"messages": [HumanMessage(content=user)]}, config=config, stream_mode="updates"):
-        # print(output)
-        last_message = next(iter(output.values()))["messages"][-1]
-        last_message.pretty_print()
+        output_dict = next(iter(output.values()))["messages"][-1]
+        msg = output_dict.content
+        if not msg:
+            msg = "Checking..."
+        
+        if msg.isdigit():
+            pass
+        else:
+            print(f"Agent: {msg}")
+
 
     
     
