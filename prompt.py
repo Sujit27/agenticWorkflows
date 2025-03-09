@@ -17,9 +17,10 @@ CATEGORIES:
 1: User is seeking information about their payment due, account balance or credit card related information
 2: User wants to make payment i.e., pay their due credit card bill
 3: User wants to update their address to a new one.
+100: User is done with his/her request and does not need any more help from bot.
 
 # OUTPUT INSTRUCTION
-Return 1,2 or 3 depending on the Category classified. Return one of these three numbers. DO NOT return anything other than this.
+Return 1,2,3 or 100 depending on the Category classified. Return one of these four numbers. DO NOT return anything other than this.
 """
 
 prompt_payment_status_task = """

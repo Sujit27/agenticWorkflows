@@ -60,7 +60,7 @@ class DataCompare(BaseModel):
 
 class ProcessIdentify(BaseModel):
     """Identify the right process category according to user request"""
-    processIdentified: int = Field(description="1,2 or 3 depending on the process Category identified")
+    processIdentified: int = Field(description="1,2,3 or 100 depending on the process Category identified")
 
 class makePayment(BaseModel):
     """Make credit card bill payment given once the user confirm to pay FULL or MIN
@@ -198,20 +198,30 @@ graph = workflow.compile(checkpointer=memory)
 
 config = {"configurable": {"thread_id": str(uuid.uuid4())}}
 
+quit_condition = False
 while True:
+    
+    if quit_condition:
+        break
+    
     user = input("User (q/Q to quit): ")
     if user in {"q", "Q"}:
         print("Conversation Terminated by User!")
         break
+    
     output = None
     for output in graph.stream({"messages": [HumanMessage(content=user)]}, config=config, stream_mode="updates"):
         output_dict = next(iter(output.values()))["messages"][-1]
         msg = output_dict.content
+
         if not msg:
             msg = "Checking..."
         
         if msg.isdigit():
-            pass
+            if str(msg)=='100':
+                quit_condition=True
+                print("Agent: Great ! Glad I could be of help today. Have a nice day!")
+                break
         else:
             print(f"Agent: {msg}")
 
