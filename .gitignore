@@ -2,6 +2,10 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 
+TOD_userStory.py
+api_keys.py
+sample_streamlit.py
+
 # C extensions
 *.so
 
