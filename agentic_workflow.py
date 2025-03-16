@@ -11,7 +11,7 @@ from typing import TypedDict, Annotated
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage, ToolMessage
 from langchain_core.tools import tool
 
-from langchain_openai import ChatOpenAI
+from langchain_mistralai import ChatMistralAI
 from pydantic import BaseModel,Field
 from typing import List, Literal, Annotated
 from langgraph.graph import StateGraph, START, END
@@ -22,10 +22,10 @@ from prompt import prompt_system_task, prompt_auth_task, prompt_compare_data,\
         prompt_make_payment_task,prompt_update_address_task
 from utility import load_data_files,get_user_info_by_acc,make_payment,update_address
 
-from api_keys import openai_api_key,langsmith_api_key
+from api_keys import openai_api_key,langsmith_api_key,mistral_api_key
 
 
-os.environ["OPENAI_API_KEY"] = openai_api_key
+os.environ["MISTRAL_API_KEY"] = mistral_api_key
 os.environ["LANGSMITH_API_KEY"] = langsmith_api_key
 os.environ['LANGSMITH_ENDPOINT'] = "https://api.smith.langchain.com"
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
@@ -38,13 +38,10 @@ df_accountInformation = df_array[0]
 df_creditCard = df_array[1]
 print("User Database Loaded !")
 
-llm = ChatOpenAI(
-    model="gpt-4o",
+llm = ChatMistralAI(
+    model="mistral-large-latest",
     temperature=0,
-    max_tokens=None,
-    timeout=None,
     max_retries=2,
-    
 )
 
 class StateSchema(BaseModel):
@@ -83,7 +80,8 @@ def authentication(account_number: int,last_name: str,date_of_birth: str):
     true if aunthenticated succesfully, else returns false"""
     provided_user_info = {"account_number":account_number,"last_name":last_name,"date_of_birth":date_of_birth}
     actual_user_info = get_user_info_by_acc(df_accountInformation,account_number)
-    compare_data_prompt = [SystemMessage(content=prompt_compare_data.format(reqs=provided_user_info,user_info=actual_user_info))]
+    # compare_data_prompt = [SystemMessage(content=prompt_compare_data.format(reqs=provided_user_info,user_info=actual_user_info))]
+    compare_data_prompt = prompt_compare_data.format(reqs=provided_user_info,user_info=actual_user_info)
     response = llm_to_compare_data.invoke(compare_data_prompt)
     return int(response.answer),actual_user_info
 
@@ -105,8 +103,9 @@ def identify_process(state: StateSchema):
             prompt_process_identification_task)] + state.messages
         process_identified = llm_to_identify_process.invoke(messages).processIdentified
 
-    return {"messages": [AIMessage(content=str(process_identified))],\
-        "current_process_identified":process_identified}
+    # return {"messages": [AIMessage(content=str(process_identified))],\
+    #     "current_process_identified":process_identified}
+    return {"current_process_identified":process_identified}
 
 
 def call_llm(state: StateSchema):
@@ -192,6 +191,7 @@ workflow.add_conditional_edges("talk_to_user", define_next_action)
 workflow.add_node("response_generator",response_generator)
 workflow.add_edge("execute_tool", "response_generator")
 workflow.add_edge("response_generator", END)
+# workflow.add_edge("talk_to_user", END)
 
 memory = MemorySaver()
 graph = workflow.compile(checkpointer=memory)
@@ -211,19 +211,22 @@ while True:
     
     output = None
     for output in graph.stream({"messages": [HumanMessage(content=user)]}, config=config, stream_mode="updates"):
-        output_dict = next(iter(output.values()))["messages"][-1]
-        msg = output_dict.content
-
-        if not msg:
-            msg = "Checking..."
+        output_dict = next(iter(output.values()))
         
-        if msg.isdigit():
-            if str(msg)=='100':
+        if "current_process_identified" in output_dict:
+            if int(output_dict["current_process_identified"])==100:
                 quit_condition=True
                 print("Agent: Great ! Glad I could be of help today. Have a nice day!")
                 break
-        else:
-            print(f"Agent: {msg}")
+
+        if "messages" in output_dict:
+            msg = output_dict["messages"][-1].content
+
+            if not msg:
+                msg = "Checking..."
+            
+            else:
+                print(f"Agent: {msg}")
 
 
     
