@@ -39,7 +39,7 @@ df_creditCard = df_array[1]
 print("User Database Loaded !")
 
 llm = ChatMistralAI(
-    model="mistral-large-latest",
+    model="ministral-8b-latest",
     temperature=0,
     max_retries=2,
 )
