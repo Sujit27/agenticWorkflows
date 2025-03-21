@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+python-dotenv
+langgraph
+langchain
+langchain_groq
+tiktoken
