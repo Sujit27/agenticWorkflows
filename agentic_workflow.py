@@ -22,11 +22,13 @@ from prompt import prompt_system_task, prompt_auth_task, prompt_compare_data,\
         prompt_make_payment_task,prompt_update_address_task
 from utility import load_data_files,get_user_info_by_acc,make_payment,update_address
 
-from api_keys import openai_api_key,langsmith_api_key
+# from api_keys import openai_api_key,langsmith_api_key
+from dotenv import load_dotenv
+load_dotenv()
 
 
-os.environ["OPENAI_API_KEY"] = openai_api_key
-os.environ["LANGSMITH_API_KEY"] = langsmith_api_key
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+os.environ["LANGSMITH_API_KEY"] = os.getenv("LANGSMITH_API_KEY")
 os.environ['LANGSMITH_ENDPOINT'] = "https://api.smith.langchain.com"
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_PROJECT"] = "pr-authorized-someplace-95"
