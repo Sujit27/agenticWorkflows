@@ -70,6 +70,8 @@ prompt_auth_task = """
 # CONTEXT
 You should ALWAYS AUTHETICATE THE USER BEFORE DOING TASKS. You MUST gather the following authentication fields from the user:
 Fields : account number, last name, date of birth
+If the 'is_auth_completed' field is 0, authentication is not completed. If it is 1, autheication is completed.
+is_auth_completed : {is_auth_completed}
 
 ## GUIDELINES:
 *Ask the user for authentication fields. 

@@ -31,8 +31,8 @@ def get_user_info_by_acc(df,account_number):
 
         return output_dict
     except:
-        print(f"Account number {account_number} not found !")
-        return None
+        return f"Account number {account_number} not found !"
+        
 
 def make_payment(user_payment_fields,user_account_fields,payment_mode='FULL'):
     if payment_mode=='FULL':

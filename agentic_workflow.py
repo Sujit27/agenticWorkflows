@@ -134,7 +134,8 @@ def call_llm(state: StateSchema):
                 prompt_payment_status_task.format(user_credit_card_info=state.user_payment_fields,\
                     user_account_info=state.user_account_fields))] + state.messages
     else:
-        messages = [SystemMessage(content=prompt_system_task + prompt_auth_task)] + state.messages
+        messages = [SystemMessage(content=prompt_system_task + prompt_auth_task.format(\
+            is_auth_completed=state.user_authenticated))] + state.messages
     response = llm_with_tools.invoke(messages)    
     return {"messages": [response]}
 
@@ -146,12 +147,13 @@ def execute_tool(state: StateSchema):
     if tool_selected['name'] == 'authentication':
         tool_runnable = tool_dict[tool_selected['name']]
         is_authenticated,user_db_info = tool_runnable.invoke(tool_selected["args"])
-        tool_message = ToolMessage(is_authenticated,tool_call_id=tool_selected["id"])
         if is_authenticated==1:
+            tool_message = ToolMessage(is_authenticated,tool_call_id=tool_selected["id"])
             user_payment_fields = get_user_info_by_acc(df_creditCard,user_db_info["account_number"])
             return {"messages": [tool_message],"user_authenticated":1,\
                 "user_payment_fields":user_payment_fields,"user_account_fields":user_db_info}
         else:
+            tool_message = ToolMessage(user_db_info,tool_call_id=tool_selected["id"])
             return {"messages": [tool_message]}
 
     elif tool_selected['name'] == 'makePayment':
@@ -198,34 +200,26 @@ workflow.add_edge("response_generator", END)
 memory = MemorySaver()
 graph = workflow.compile(checkpointer=memory)
 
-config = {"configurable": {"thread_id": str(uuid.uuid4())}}
+def main():
+    config = {"configurable": {"thread_id": str(uuid.uuid4())}}
 
-quit_condition = False
-while True:
-    
-    if quit_condition:
-        break
-    
-    user = input("User (q/Q to quit): ")
-    if user in {"q", "Q"}:
-        print("Conversation Terminated by User!")
-        break
-    
-    output = None
-    for output in graph.stream({"messages": [HumanMessage(content=user)]}, config=config, stream_mode="updates"):
-        output_dict = next(iter(output.values()))["messages"][-1]
-        msg = output_dict.content
-
-        if not msg:
-            msg = "Checking..."
+    quit_condition = False
+    while True:
         
-        if msg.isdigit():
-            if str(msg)=='100':
-                quit_condition=True
-                print("Agent: Great ! Glad I could be of help today. Have a nice day!")
-                break
-        else:
-            print(f"Agent: {msg}")
+        if quit_condition:
+            break
+        
+        user = input("User (q/Q to quit): ")
+        if user in {"q", "Q"}:
+            print("Conversation Terminated by User!")
+            break
+        
+        output = graph.invoke({"messages": [HumanMessage(content=user)]}, config=config)
+        msg = output['messages'][-1].content
+        print(f"Agent: {msg}")
+
+if __name__=="__main__":
+    main()
 
 
     
