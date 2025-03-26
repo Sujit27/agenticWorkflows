@@ -33,8 +33,8 @@ os.environ['LANGSMITH_ENDPOINT'] = "https://api.smith.langchain.com"
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_PROJECT"] = "pr-authorized-someplace-95"
 
-account_information_file_path = "accountInformation.csv"
-credit_card_file_path = "creditCard.csv"
+account_information_file_path = "../data/accountInformation.csv"
+credit_card_file_path = "../data/creditCard.csv"
 df_array = load_data_files(account_information_file_path,credit_card_file_path)
 df_accountInformation = df_array[0]
 df_creditCard = df_array[1]
