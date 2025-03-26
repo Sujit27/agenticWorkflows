@@ -9,8 +9,27 @@ pip install -r requirements.txt
 ```
 
 ## Usage
+
+###Test on terminal
 ```bash
+cd src
+python agentic_workflow.py
+```
+
+###Run server
+```bash
+cd src
 uvicorn main:app --reload
+```
+
+###API call
+```bash
+curl --location 'http://127.0.0.1:8000/chat' \
+--header 'Content-Type: application/json' \
+--data '{
+           "messages": "Hello!",
+           "thread_id": "0"
+         }'
 ```
 
 ## Sample output
