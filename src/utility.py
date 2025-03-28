@@ -2,8 +2,8 @@
 import json 
 import datetime 
 import random
-import mysql.connector
-from mysql.connector import Error
+# import mysql.connector
+# from mysql.connector import Error
 import pandas as pd
 
 
