@@ -13,4 +13,6 @@ class ChatInput(BaseModel):
 async def chat(input: ChatInput):
     config = {"configurable": {"thread_id": input.thread_id}}
     response = await graph.ainvoke({"messages": [HumanMessage(content=input.messages)]}, config=config)
-    return response["messages"][-1].content
+    res_msg = response["messages"][-1].content
+    res_state = response["current_process_identified"]
+    return {"message":res_msg,"state":res_state}

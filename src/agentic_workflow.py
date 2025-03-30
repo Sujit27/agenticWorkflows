@@ -137,7 +137,7 @@ def call_llm(state: StateSchema):
         messages = [SystemMessage(content=prompt_system_task + prompt_auth_task.format(\
             is_auth_completed=state.user_authenticated))] + state.messages
     response = llm_with_tools.invoke(messages)    
-    return {"messages": [response]}
+    return {"messages": [response],"current_process_identified":state.current_process_identified}
 
 def execute_tool(state: StateSchema):
     """
