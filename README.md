@@ -33,7 +33,8 @@ curl --location 'http://127.0.0.1:8000/chat' \
 ```
 
 ## Sample output
-![sample conversation](https://github.com/Sujit27/agenticWorkflows/blob/main/output/agentic_conv_sample1.png)
+![sample conversation1](https://github.com/Sujit27/agenticWorkflows/blob/main/output/agentic_conv_sample1.png)
+![sample conversation2](https://github.com/Sujit27/agenticWorkflows/blob/main/output/streamlit_chat_sample.png)
 
 ## Sample Trace
 ![sample Langsmith Trace](https://github.com/Sujit27/agenticWorkflows/blob/main/output/agentic_graph_trace.png)
