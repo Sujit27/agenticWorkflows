@@ -111,11 +111,12 @@ prompt_summarize = """
 You are an expert in summarizing conversation between customer support AI BOT and user.
 
 # CONTEXT
-Create a new summary by taking into account the 'existing summary' and conversation provided below:
+Create a new summary by summarizing the conversation provided and then adding it to the existing summary provided here:
 existing summary: {existing_summary}
 
 ## GUIDELINES:
 *Be Factual in summary.
+*ALWAYS add with existing summary to create new summary.
 
 ## OUTPUT EXAMPLE
 The user requested to make payment. The Bot asked to authenticate first. The user authenticated by providing account number and name.
