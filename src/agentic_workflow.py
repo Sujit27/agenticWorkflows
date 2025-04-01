@@ -19,7 +19,7 @@ from langgraph.checkpoint.memory import MemorySaver
 
 from prompt import prompt_system_task, prompt_auth_task, prompt_compare_data,\
      prompt_payment_status_task, prompt_process_identification_task,\
-        prompt_make_payment_task,prompt_update_address_task
+        prompt_make_payment_task,prompt_update_address_task,prompt_summarize
 from utility import load_data_files,get_user_info_by_acc,make_payment,update_address
 
 # from api_keys import openai_api_key,langsmith_api_key
@@ -189,18 +189,7 @@ def define_next_action(state) -> Literal["execute_tool", END]:
 
 def summarize_conversation(state: StateSchema):
     # First, we summarize the conversation
-    summary = state.summary
-    if summary:
-        # If a summary already exists, we use a different system prompt
-        # to summarize it than if one didn't
-        summary_message = (
-            f"This is summary of the conversation to date: {summary}\n\n"
-            "Create a new summary by taking into account the existing summary and conversation below:"
-        )
-    else:
-        summary_message = "Create a summary of the conversation below:"
-
-    messages = [SystemMessage(content=summary_message)] + state.messages
+    messages = [SystemMessage(content=prompt_summarize.format(existing_summary=state.summary))] + state.messages
     response = llm.invoke(messages)
     # We now need to delete messages that we no longer want to show up
     # I will delete all but the last two messages, but you can change this

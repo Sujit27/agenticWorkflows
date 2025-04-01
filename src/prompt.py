@@ -105,3 +105,20 @@ Else
      RETURN 0
 DO NOT return anything else.
 """
+
+prompt_summarize = """
+# IDENTITY and SYSTEM INSTRUCTION
+You are an expert in summarizing conversation between customer support AI BOT and user.
+
+# CONTEXT
+Create a new summary by taking into account the 'existing summary' and conversation provided below:
+existing summary: {existing_summary}
+
+## GUIDELINES:
+*Be Factual in summary.
+
+## OUTPUT EXAMPLE
+The user requested to make payment. The Bot asked to authenticate first. The user authenticated by providing account number and name.
+The user requested to pay the full credit card bill.
+"""
+
