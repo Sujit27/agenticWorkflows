@@ -8,7 +8,7 @@ import json
 
 from langgraph.graph.message import add_messages
 from typing import TypedDict, Annotated
-from langchain_core.messages import HumanMessage, SystemMessage, AIMessage, ToolMessage
+from langchain_core.messages import HumanMessage, SystemMessage, AIMessage, ToolMessage, RemoveMessage
 from langchain_core.tools import tool
 
 from langchain_openai import ChatOpenAI
@@ -41,7 +41,7 @@ df_creditCard = df_array[1]
 print("User Database Loaded !")
 
 llm = ChatOpenAI(
-    model="gpt-4o",
+    model="gpt-4o-mini",
     temperature=0,
     max_tokens=None,
     timeout=None,
@@ -51,6 +51,7 @@ llm = ChatOpenAI(
 
 class StateSchema(BaseModel):
     messages: Annotated[list, add_messages]
+    summary: str = Field(default=None, description="Summary of the conversation")
     user_authenticated: int = Field(default=0, description="Whether user has been authenticated")
     user_account_fields: dict = Field(default=None, description="The account fields extracted for the user from database")
     user_payment_fields: dict = Field(default=None, description="The payment fields extracted for the user from database")
@@ -186,6 +187,26 @@ def define_next_action(state) -> Literal["execute_tool", END]:
     else:
         return END
 
+def summarize_conversation(state: StateSchema):
+    # First, we summarize the conversation
+    summary = state.summary
+    if summary:
+        # If a summary already exists, we use a different system prompt
+        # to summarize it than if one didn't
+        summary_message = (
+            f"This is summary of the conversation to date: {summary}\n\n"
+            "Create a new summary by taking into account the existing summary and conversation below:"
+        )
+    else:
+        summary_message = "Create a summary of the conversation below:"
+
+    messages = [SystemMessage(content=summary_message)] + state.messages
+    response = llm.invoke(messages)
+    # We now need to delete messages that we no longer want to show up
+    # I will delete all but the last two messages, but you can change this
+    delete_messages = [RemoveMessage(id=m.id) for m in state.messages[:-1]]
+    return {"summary": response.content, "messages": delete_messages}
+
 workflow = StateGraph(StateSchema)
 workflow.add_node("identify_process", identify_process)
 workflow.add_edge(START, "identify_process")
@@ -195,7 +216,9 @@ workflow.add_node("execute_tool", execute_tool)
 workflow.add_conditional_edges("talk_to_user", define_next_action)
 workflow.add_node("response_generator",response_generator)
 workflow.add_edge("execute_tool", "response_generator")
-workflow.add_edge("response_generator", END)
+workflow.add_node("summarize_conversation",summarize_conversation)
+workflow.add_edge("response_generator", "summarize_conversation")
+workflow.add_edge("summarize_conversation", END)
 
 memory = MemorySaver()
 graph = workflow.compile(checkpointer=memory)
