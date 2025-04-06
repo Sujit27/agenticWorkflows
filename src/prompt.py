@@ -124,3 +124,7 @@ The user requested to make payment. The Bot asked to authenticate first. The use
 The user requested to pay the full credit card bill.
 """
 
+summary_placeholder = """
+Following is the full summary of the conversation till the last checkpoint followed by the current conversation:
+{existing_summary}
+"""

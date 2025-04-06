@@ -19,7 +19,7 @@ from langgraph.checkpoint.memory import MemorySaver
 
 from prompt import prompt_system_task, prompt_auth_task, prompt_compare_data,\
      prompt_payment_status_task, prompt_process_identification_task,\
-        prompt_make_payment_task,prompt_update_address_task,prompt_summarize
+        prompt_make_payment_task,prompt_update_address_task,prompt_summarize,summary_placeholder
 from utility import load_data_files,get_user_info_by_acc,make_payment,update_address
 
 # from api_keys import openai_api_key,langsmith_api_key
@@ -60,7 +60,7 @@ llm_heavy = ChatOpenAI(
 
 class StateSchema(BaseModel):
     messages: Annotated[list, add_messages]
-    summary: str = Field(default=None, description="Summary of the conversation")
+    summary: str = Field(default="", description="Summary of the conversation")
     user_authenticated: int = Field(default=0, description="Whether user has been authenticated")
     user_account_fields: dict = Field(default=None, description="The account fields extracted for the user from database")
     user_payment_fields: dict = Field(default=None, description="The payment fields extracted for the user from database")
@@ -114,7 +114,8 @@ def identify_process(state: StateSchema):
         process_identified=0
     else:
         messages = [SystemMessage(content=prompt_system_task + \
-            prompt_process_identification_task)] + state.messages
+            prompt_process_identification_task + \
+                summary_placeholder.format(existing_summary=state.summary))] + state.messages
         process_identified = llm_to_identify_process.invoke(messages).processIdentified
 
     return {"messages": [AIMessage(content=str(process_identified))],\
@@ -130,22 +131,24 @@ def call_llm(state: StateSchema):
         if state.current_process_identified==1:
             messages = [SystemMessage(content=prompt_system_task + \
                 prompt_payment_status_task.format(user_credit_card_info=state.user_payment_fields,\
-                    user_account_info=state.user_account_fields))] + state.messages
+                    user_account_info=state.user_account_fields) + \
+                        summary_placeholder.format(existing_summary=state.summary))] + state.messages
         elif state.current_process_identified==2:
             messages = [SystemMessage(content=prompt_system_task + \
                 prompt_make_payment_task.format(user_credit_card_info=state.user_payment_fields,\
-                    ))] + state.messages
+                    ) + summary_placeholder.format(existing_summary=state.summary))] + state.messages
         elif state.current_process_identified==3:
             messages = [SystemMessage(content=prompt_system_task + \
-                prompt_update_address_task,\
-                    )] + state.messages
+                prompt_update_address_task + summary_placeholder.format(existing_summary=state.summary))] + state.messages
         else:
             messages = [SystemMessage(content=prompt_system_task + \
                 prompt_payment_status_task.format(user_credit_card_info=state.user_payment_fields,\
-                    user_account_info=state.user_account_fields))] + state.messages
+                    user_account_info=state.user_account_fields) + \
+                        summary_placeholder.format(existing_summary=state.summary))] + state.messages
     else:
         messages = [SystemMessage(content=prompt_system_task + prompt_auth_task.format(\
-            is_auth_completed=state.user_authenticated))] + state.messages
+            is_auth_completed=state.user_authenticated) + \
+                summary_placeholder.format(existing_summary=state.summary))] + state.messages
     response = llm_with_tools.invoke(messages)    
     return {"messages": [response],"current_process_identified":state.current_process_identified}
 
@@ -184,7 +187,8 @@ def execute_tool(state: StateSchema):
 def response_generator(state: StateSchema):
     messages = [SystemMessage(content=prompt_system_task + \
             prompt_payment_status_task.format(user_credit_card_info=state.user_payment_fields,\
-                user_account_info=state.user_account_fields))] + state.messages
+                user_account_info=state.user_account_fields) + \
+                    summary_placeholder.format(existing_summary=state.summary))] + state.messages
     response = llm_light.invoke(messages)
     return {"messages": [response]}
 
