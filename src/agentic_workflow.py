@@ -40,8 +40,17 @@ df_accountInformation = df_array[0]
 df_creditCard = df_array[1]
 print("User Database Loaded !")
 
-llm = ChatOpenAI(
+llm_light = ChatOpenAI(
     model="gpt-4o-mini",
+    temperature=0,
+    max_tokens=None,
+    timeout=None,
+    max_retries=2,
+    
+)
+
+llm_heavy = ChatOpenAI(
+    model="gpt-4o",
     temperature=0,
     max_tokens=None,
     timeout=None,
@@ -77,8 +86,8 @@ class updateAddress(BaseModel):
     street_name: str = Field(description="Street name in new address provided by user")
     zip_code: str = Field(description="Zip Code in new address provided by user")
 
-llm_to_compare_data = llm.with_structured_output(DataCompare)
-llm_to_identify_process = llm.with_structured_output(ProcessIdentify)
+llm_to_compare_data = llm_light.with_structured_output(DataCompare)
+llm_to_identify_process = llm_light.with_structured_output(ProcessIdentify)
 
 @tool
 def authentication(account_number: int,last_name: str,date_of_birth: str):
@@ -94,7 +103,7 @@ def authentication(account_number: int,last_name: str,date_of_birth: str):
 tools = [authentication,makePayment,updateAddress]
 tool_dict = {"authentication":authentication}
 
-llm_with_tools = llm.bind_tools(tools)
+llm_with_tools = llm_light.bind_tools(tools)
 
 
 def identify_process(state: StateSchema):
@@ -176,7 +185,7 @@ def response_generator(state: StateSchema):
     messages = [SystemMessage(content=prompt_system_task + \
             prompt_payment_status_task.format(user_credit_card_info=state.user_payment_fields,\
                 user_account_info=state.user_account_fields))] + state.messages
-    response = llm.invoke(messages)
+    response = llm_light.invoke(messages)
     return {"messages": [response]}
 
 def define_next_action(state) -> Literal["execute_tool", END]:
@@ -190,7 +199,7 @@ def define_next_action(state) -> Literal["execute_tool", END]:
 def summarize_conversation(state: StateSchema):
     # First, we summarize the conversation
     messages = [SystemMessage(content=prompt_summarize.format(existing_summary=state.summary))] + state.messages
-    response = llm.invoke(messages)
+    response = llm_heavy.invoke(messages)
     # We now need to delete messages that we no longer want to show up
     # I will delete all but the last two messages, but you can change this
     delete_messages = [RemoveMessage(id=m.id) for m in state.messages[:-1]]

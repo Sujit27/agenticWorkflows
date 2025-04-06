@@ -117,6 +117,7 @@ existing summary: {existing_summary}
 ## GUIDELINES:
 *Be Factual in summary.
 *ALWAYS add with existing summary to create new summary.
+*If existing summary is None, create the summmary only by considering the conversation.
 
 ## OUTPUT EXAMPLE
 The user requested to make payment. The Bot asked to authenticate first. The user authenticated by providing account number and name.
