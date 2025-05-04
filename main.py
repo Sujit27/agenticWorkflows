@@ -74,8 +74,15 @@ async def call_agent_async(query: str, runner, user_id, session_id):
   print(f"<<< Agent Response: {final_response_text}")
 
 async def run_conversation():
-
-    await call_agent_async("Hello, how can you help?",
+    quit_condition = False
+    while True:
+        if quit_condition:
+            break
+        user_input = input("User (q/Q to quit): ")
+        if user_input in {"q", "Q"}:
+            print("Conversation Terminated by User!")
+            break
+        await call_agent_async(user_input,
                                        runner=runner,
                                        user_id=USER_ID,
                                        session_id=SESSION_ID)
