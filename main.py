@@ -6,9 +6,11 @@ import logging
 from google.adk.agents import LlmAgent
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
+from google.adk.tools.tool_context import ToolContext
 from google.genai import types
 from pydantic import BaseModel, Field
 from api_keys import *
+from prompt import prompt_auth_task
 
 import warnings
 # Ignore all warnings
@@ -48,7 +50,7 @@ MODEL_NAME = "gemini-2.0-flash"
 #     population_estimate: str = Field(description="An estimated population of the capital city.")
 
 # --- 3. Define the Tool (Only for the first agent) ---
-def authenticate_user(last_name: str) -> dict:
+def authenticate_user(last_name: str,tool_context: ToolContext) -> dict:
     """Authenticates a user
     Args:
         last_name (str): Last name provided by the user.
@@ -63,8 +65,10 @@ def authenticate_user(last_name: str) -> dict:
         last_name_normalized = last_name.lower() # Basic normalization
         last_name_list = ['doe','smith']
         if last_name_normalized in last_name_list:
+            tool_context.state["user_authenticated"]=1
             return {"status": "success", "is_authenticated": 'True'}
         else:
+            tool_context.state["user_authenticated"]=0
             return {"status": "success", "is_authenticated": 'False'}
     except:
         return {"status": "error", "error_message": f"Sorry, I am not to authenticate at the moment."}
@@ -75,12 +79,8 @@ def authenticate_user(last_name: str) -> dict:
 authentication_agent = LlmAgent(
     model=MODEL_NAME,
     name="authentication_agent",
-    description="Retrieves the capital city using a specific tool.",
-    instruction="""You are a helpful agent that authenticates a user.
-You need the following mandatory fields from the user to authentiate him/her. Inform this requirement to the user.
-1. Last name of the user.
-Extract the mandatory fields once user provides and call the relevant tool.
-""",
+    description="Authenticates a user",
+    instruction=prompt_auth_task,
     tools=[authenticate_user],
 )
 
@@ -105,11 +105,12 @@ Extract the mandatory fields once user provides and call the relevant tool.
 session_service = InMemorySessionService()
 
 initial_state = {
-    "user_authenticated": None
+    "user_authenticated": 0
 }
 
 # Create separate sessions for clarity, though not strictly necessary if context is managed
-session = session_service.create_session(app_name=APP_NAME, user_id=USER_ID, session_id=SESSION_ID,state=initial_state)
+session = session_service.create_session(app_name=APP_NAME, user_id=USER_ID,\
+     session_id=SESSION_ID,state=initial_state)
 # session_service.create_session(app_name=APP_NAME, user_id=USER_ID, session_id=SESSION_ID_SCHEMA_AGENT)
 
 # Create a runner for EACH agent
@@ -129,18 +130,18 @@ async def call_agent(
     user_input: str
 ):
     """Sends a user input to the agent and provide output."""
-    current_session = session_service.get_session(app_name=APP_NAME, 
-                                                  user_id=USER_ID, 
-                                                  session_id=SESSION_ID)
-    if not current_session:
-        logger.error("Session not found!")
-        return
+    # current_session = session_service.get_session(app_name=APP_NAME, 
+    #                                               user_id=USER_ID, 
+    #                                               session_id=SESSION_ID)
+    # if not current_session:
+    #     logger.error("Session not found!")
+    #     return
 
     content = types.Content(role='user', parts=[types.Part(text=user_input)])
 
     async for event in runner.run_async(user_id=USER_ID, session_id=SESSION_ID, new_message=content):
         # You can uncomment the line below to see *all* events during execution
-        print(f"  [Event] Author: {event.author}, Type: {type(event).__name__}, Final: {event.is_final_response()}, Content: {event.content}")
+        # print(f"  [Event] Author: {event.author}, Type: {type(event).__name__}, Final: {event.is_final_response()}, Content: {event.content}")
 
         # Key Concept: is_final_response() marks the concluding message for the turn.
         if event.is_final_response():
@@ -151,15 +152,22 @@ async def call_agent(
                 final_response_text = f"Agent escalated: {event.error_message or 'No specific message.'}"
             # Add more checks here if needed (e.g., specific error codes)
             break # Stop processing events once the final response is found
-    return final_response_text
 
-    # final_session = session_service.get_session(app_name=APP_NAME, 
-    #                                             user_id=USER_ID, 
-    #                                             session_id=SESSION_ID)
-    # print("Final Session State:")
-    # import json
-    # print(json.dumps(final_session.state, indent=2))
-    # print("-------------------------------\n")
+    final_session = session_service.get_session(app_name=APP_NAME, 
+                                                user_id=USER_ID, 
+                                                session_id=SESSION_ID)
+    print("Current Session State:")
+    print(json.dumps(final_session.state, indent=2))
+    print("-------------------------------\n")
+    print("All events in current session:")
+    for event in final_session.events:
+        if event.author == "user":  # Check if it's a user message
+            print("User:", event.content)
+        else:  # Check if it's an agent response
+            print("Agent:", event.content)
+        print("------\n")
+    print("-------------------------------\n")
+    return final_response_text
 
 
 # --- 7. Run Interactions ---
