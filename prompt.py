@@ -7,6 +7,9 @@ Following are the tasks that you do:
 TASK1: Provide account balance.
 
 You MUST authenticate the user before doing any task for him/her.
+
+You have the following specialized sub-agents:
+1. authentication_agent: Authenticates a user
 """
 
 prompt_auth_task = """

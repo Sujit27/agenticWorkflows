@@ -10,7 +10,7 @@ from google.adk.tools.tool_context import ToolContext
 from google.genai import types
 from pydantic import BaseModel, Field
 from api_keys import *
-from prompt import prompt_auth_task
+from prompt import prompt_auth_task,prompt_system_task
 
 import warnings
 # Ignore all warnings
@@ -30,8 +30,8 @@ os.environ["GOOGLE_CLOUD_LOCATION"] = google_project_region
 os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "TRUE"
 
 # --- 1. Define Constants ---
-APP_NAME = "agent_comparison_app"
-USER_ID = "test_user_456"
+APP_NAME = "banking_bot_app"
+USER_ID = "test_user_42"
 SESSION_ID = "session_tool_agent_xyz"
 SESSION_ID_SCHEMA_AGENT = "session_schema_agent_xyz"
 MODEL_NAME = "gemini-2.0-flash"
@@ -84,22 +84,14 @@ authentication_agent = LlmAgent(
     tools=[authenticate_user],
 )
 
-# # Agent 2: Uses output_schema (NO tools possible)
-# structured_info_agent_schema = LlmAgent(
-#     model=MODEL_NAME,
-#     name="structured_info_agent_schema",
-#     description="Provides capital and estimated population in a specific JSON format.",
-#     instruction=f"""You are an agent that provides country information.
-# The user will provide the country name in a JSON format like {{"country": "country_name"}}.
-# Respond ONLY with a JSON object matching this exact schema:
-# {json.dumps(CapitalInfoOutput.model_json_schema(), indent=2)}
-# Use your knowledge to determine the capital and estimate the population. Do not use any tools.
-# """,
-#     # *** NO tools parameter here - using output_schema prevents tool use ***
-#     input_schema=CountryInput,
-#     output_schema=CapitalInfoOutput, # Enforce JSON output structure
-#     output_key="structured_info_result", # Store final JSON response
-# )
+# Agent 2: Uses output_schema (NO tools possible)
+talk_to_user = LlmAgent(
+    model=MODEL_NAME,
+    name="talk_to_user",
+    description="Primary agent that talks to the user and orchestrates tasks",
+    instruction=prompt_system_task,
+    sub_agents=[authentication_agent],
+)
 
 # --- 5. Set up Session Management and Runners ---
 session_service = InMemorySessionService()
@@ -115,27 +107,16 @@ session = session_service.create_session(app_name=APP_NAME, user_id=USER_ID,\
 
 # Create a runner for EACH agent
 runner = Runner(
-    agent=authentication_agent,
+    agent=talk_to_user,
     app_name=APP_NAME,
     session_service=session_service
 )
-# structured_runner = Runner(
-#     agent=structured_info_agent_schema,
-#     app_name=APP_NAME,
-#     session_service=session_service
-# )
 
 # --- 6. Define Agent Interaction Logic ---
 async def call_agent(
     user_input: str
 ):
     """Sends a user input to the agent and provide output."""
-    # current_session = session_service.get_session(app_name=APP_NAME, 
-    #                                               user_id=USER_ID, 
-    #                                               session_id=SESSION_ID)
-    # if not current_session:
-    #     logger.error("Session not found!")
-    #     return
 
     content = types.Content(role='user', parts=[types.Part(text=user_input)])
 
@@ -161,10 +142,7 @@ async def call_agent(
     print("-------------------------------\n")
     print("All events in current session:")
     for event in final_session.events:
-        if event.author == "user":  # Check if it's a user message
-            print("User:", event.content)
-        else:  # Check if it's an agent response
-            print("Agent:", event.content)
+        print(event.content)
         print("------\n")
     print("-------------------------------\n")
     return final_response_text
