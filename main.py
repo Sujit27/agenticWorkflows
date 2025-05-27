@@ -10,7 +10,7 @@ from google.adk.tools.tool_context import ToolContext
 from google.genai import types
 from pydantic import BaseModel, Field
 from api_keys import *
-from prompt import prompt_auth_task,prompt_system_task
+from prompt import *
 
 import warnings
 # Ignore all warnings
@@ -50,10 +50,11 @@ MODEL_NAME = "gemini-2.0-flash"
 #     population_estimate: str = Field(description="An estimated population of the capital city.")
 
 # --- 3. Define the Tool (Only for the first agent) ---
-def authenticate_user(last_name: str,tool_context: ToolContext) -> dict:
+def authenticate_user(last_name: str,last_digits: str, tool_context: ToolContext) -> dict:
     """Authenticates a user
     Args:
         last_name (str): Last name provided by the user.
+        last_digits (str): Last 4 digits of debit card provided by the user.
 
     Returns:
         dict: A dictionary providing whether the user was authenticated.
@@ -62,9 +63,14 @@ def authenticate_user(last_name: str,tool_context: ToolContext) -> dict:
               If 'error', includes an 'error_message' key.
     """
     try:
-        last_name_normalized = last_name.lower() # Basic normalization
-        last_name_list = ['doe','smith']
-        if last_name_normalized in last_name_list:
+        last_name_normalized = last_name
+        last_name_from_db =  tool_context.state["user_name"].split()[-1]
+        # print(last_name_from_db)
+        last_digits_from_db = tool_context.state["user_debit_card_digits"]
+        # print(last_digits_from_db)
+        is_name_match = last_name_normalized == last_name_from_db
+        is_number_match = last_digits == last_digits_from_db
+        if is_name_match and is_number_match:
             tool_context.state["user_authenticated"]=1
             return {"status": "success", "is_authenticated": 'True'}
         else:
@@ -75,7 +81,7 @@ def authenticate_user(last_name: str,tool_context: ToolContext) -> dict:
 
 # --- 4. Configure Agents ---
 
-# Agent 1: Uses a tool and output_key
+
 authentication_agent = LlmAgent(
     model=MODEL_NAME,
     name="authentication_agent",
@@ -84,20 +90,34 @@ authentication_agent = LlmAgent(
     tools=[authenticate_user],
 )
 
-# Agent 2: Uses output_schema (NO tools possible)
+account_info_agent = LlmAgent(
+    model=MODEL_NAME,
+    name="account_info_agent",
+    description="Provides information about account and credit card bill",
+    instruction=prompt_account_info_task,
+)
+
+
 talk_to_user = LlmAgent(
     model=MODEL_NAME,
     name="talk_to_user",
     description="Primary agent that talks to the user and orchestrates tasks",
     instruction=prompt_system_task,
-    sub_agents=[authentication_agent],
+    sub_agents=[authentication_agent,account_info_agent],
 )
 
 # --- 5. Set up Session Management and Runners ---
 session_service = InMemorySessionService()
 
 initial_state = {
-    "user_authenticated": 0
+    "user_authenticated": 0,
+    "user_name": "John Doe",
+    "user_debit_card_digits": "1890",
+    "user_account_balance": 10000,
+    "user_credit_card_bill":1500,
+    "user_house_number":42,
+    "user_street_name":"Oak St",
+    "user_zip_code":"89530"
 }
 
 # Create separate sessions for clarity, though not strictly necessary if context is managed
@@ -137,14 +157,14 @@ async def call_agent(
     final_session = session_service.get_session(app_name=APP_NAME, 
                                                 user_id=USER_ID, 
                                                 session_id=SESSION_ID)
-    print("Current Session State:")
-    print(json.dumps(final_session.state, indent=2))
-    print("-------------------------------\n")
-    print("All events in current session:")
-    for event in final_session.events:
-        print(event.content)
-        print("------\n")
-    print("-------------------------------\n")
+    # print("Current Session State:")
+    # print(json.dumps(final_session.state, indent=2))
+    # print("-------------------------------\n")
+    # print("All events in current session:")
+    # for event in final_session.events:
+    #     print(event.content)
+    #     print("------\n")
+    # print("-------------------------------\n")
     return final_response_text
 
 
