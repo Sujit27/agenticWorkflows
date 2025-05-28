@@ -79,6 +79,30 @@ def authenticate_user(last_name: str,last_digits: str, tool_context: ToolContext
     except:
         return {"status": "error", "error_message": f"Sorry, I am not to authenticate at the moment."}
 
+def pay_credit_card_bill(amount_to_pay: int,tool_context: ToolContext) -> dict:
+    """Pays the credit card bill for the user
+    Args:
+        amount_to_pay (int): amount to be paid by the user as credit card bill payment.
+
+    Returns:
+        dict: A dictionary providing whether the payment was completed.
+              Includes a 'status' key ('success' or 'error').
+              If 'success', includes a 'is_payment_completed' key.
+              If 'error', includes an 'error_message' key.
+    """
+    try:
+        min_amount = tool_context.state["user_credit_card_bill_min_pay"]
+        max_amount = tool_context.state["user_credit_card_bill"]
+        account_balance = tool_context.state["user_account_balance"]
+        if min_amount <= amount_to_pay <= max_amount:
+            tool_context.state["user_credit_card_bill"] = max_amount - amount_to_pay
+            tool_context.state["user_account_balance"] = account_balance - amount_to_pay
+            return {"status": "success", "is_payment_completed": 'True'}
+        else:
+            return {"status": "success", "is_payment_completed": 'False'}
+    except:
+        return {"status": "error", "error_message": f"Sorry, I am not able to pay credit card bill at the moment."}
+
 # --- 4. Configure Agents ---
 
 
@@ -97,13 +121,20 @@ account_info_agent = LlmAgent(
     instruction=prompt_account_info_task,
 )
 
-
-talk_to_user = LlmAgent(
+bill_payment_agent = LlmAgent(
     model=MODEL_NAME,
-    name="talk_to_user",
+    name="bill_payment_agent",
+    description="Pays the credit card bill for the user",
+    instruction=prompt_make_payment_task,
+    tools=[pay_credit_card_bill],
+)
+
+root_agent = LlmAgent(
+    model=MODEL_NAME,
+    name="root_agent",
     description="Primary agent that talks to the user and orchestrates tasks",
     instruction=prompt_system_task,
-    sub_agents=[authentication_agent,account_info_agent],
+    sub_agents=[authentication_agent,account_info_agent,bill_payment_agent],
 )
 
 # --- 5. Set up Session Management and Runners ---
@@ -115,6 +146,7 @@ initial_state = {
     "user_debit_card_digits": "1890",
     "user_account_balance": 10000,
     "user_credit_card_bill":1500,
+    "user_credit_card_bill_min_pay":100,
     "user_house_number":42,
     "user_street_name":"Oak St",
     "user_zip_code":"89530"
@@ -127,7 +159,7 @@ session = session_service.create_session(app_name=APP_NAME, user_id=USER_ID,\
 
 # Create a runner for EACH agent
 runner = Runner(
-    agent=talk_to_user,
+    agent=root_agent,
     app_name=APP_NAME,
     session_service=session_service
 )
