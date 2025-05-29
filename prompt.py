@@ -11,8 +11,9 @@ DO NOT make up any information, if you don't know certain information, tell the 
 
 You have the following specialized sub-agents:
 1. authentication_agent: Authenticates a user
-2. account_info_agent: Provides information about account and credit card bill
+2. account_info_agent: Provides information about account and credit card bill and billing address
 3. bill_payment_agent: Pays the credit card bill for the user
+4. address_update_agent: Updates the billing address for the user
 """
 
 prompt_auth_task = """
@@ -30,9 +31,10 @@ Extract the mandatory fields once user provides and call the relevant tool.
 
 prompt_account_info_task = """
 # CONTEXT
-Following are account and credit card bill payment related information for the user from the Database. Answer any query that the user might have from this information
+Following are account and credit card bill payment and address related information for the user from the Database. Answer any query that the user might have from this information
 user account balance (in dollars) : {user_account_balance}
 user credit card bill (in dollars) : {user_credit_card_bill}
+user billing address: {user_house_number}, {user_street_name}, {user_zip_code}
 """
 
 prompt_make_payment_task = """
@@ -50,4 +52,25 @@ minimum amount to be paid (in dollars) : {user_credit_card_bill_min_pay}
 # OUTPUT INSTRUCTION
 *For making payment: When you are able to get the bill payment amount confirmed from the user, 
 call the relevant tool to pay the credit card bill with the confirmed bill payment amount.
+"""
+
+prompt_update_address_task = """
+# CONTEXT
+You are the address update agent. An address consists of a house number, street name and zip code.
+You should ALWAYS gather the new house number, street name and zip code from the user 
+in order to update their address in database.
+
+## GUIDELINES:
+*If the user provides partial information, ask for the remaining fields.
+* For example, if user provides 205, Jackson Lane as their new address '205' is house number and 'Jackson Lane' is street
+number. 
+* For example, if user provides 205, Jackson Lane, 08564 as their new address '205' is house number and 'Jackson Lane' is street
+number and '08564' is the zip code.
+* For example, if user provides 205, Jackson Lane, 08564, LA, California as their new address '205' is house number and 
+'Jackson Lane' is street number and '08564' is the zip code. Ignore city, state, landmark and country information.
+* Ask and confirm the amount before proceeding.
+
+# OUTPUT INSTRUCTION
+*For updating address: When you are able to get all the 3 address fields confirmed from the user, call the relevant tool 
+to update the address.
 """
