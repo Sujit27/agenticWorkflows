@@ -10,31 +10,27 @@ from google.adk.tools.tool_context import ToolContext
 from google.genai import types
 from pydantic import BaseModel, Field
 from api_keys import *
-from prompt import *
+from config import *
+from agents import *
 
 import warnings
 # Ignore all warnings
 warnings.filterwarnings("ignore")
 
-import logging
-logging.basicConfig(level=logging.ERROR)
+# import logging
+# logging.basicConfig(level=logging.ERROR)
 
-# --- Configure Logging ---
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+# # --- Configure Logging ---
+# logging.basicConfig(level=logging.INFO)
+# logger = logging.getLogger(__name__)
 
-print("Libraries imported.")
+# print("Libraries imported.")
 
 os.environ["GOOGLE_CLOUD_PROJECT"] = google_project_id
 os.environ["GOOGLE_CLOUD_LOCATION"] = google_project_region
 os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "TRUE"
 
 # --- 1. Define Constants ---
-APP_NAME = "banking_bot_app"
-USER_ID = "test_user_42"
-SESSION_ID = "session_tool_agent_xyz"
-SESSION_ID_SCHEMA_AGENT = "session_schema_agent_xyz"
-MODEL_NAME = "gemini-2.0-flash"
 
 # --- 2. Define Schemas ---
 
@@ -49,138 +45,14 @@ MODEL_NAME = "gemini-2.0-flash"
 #     # as it cannot use tools when output_schema is set.
 #     population_estimate: str = Field(description="An estimated population of the capital city.")
 
-# --- 3. Define the Tool (Only for the first agent) ---
-def authenticate_user(last_name: str,last_digits: str, tool_context: ToolContext) -> dict:
-    """Authenticates a user
-    Args:
-        last_name (str): Last name provided by the user.
-        last_digits (str): Last 4 digits of debit card provided by the user.
 
-    Returns:
-        dict: A dictionary providing whether the user was authenticated.
-              Includes a 'status' key ('success' or 'error').
-              If 'success', includes a 'is_authenticated' key.
-              If 'error', includes an 'error_message' key.
-    """
-    try:
-        last_name_normalized = last_name
-        last_name_from_db =  tool_context.state["user_name"].split()[-1]
-        # print(last_name_from_db)
-        last_digits_from_db = tool_context.state["user_debit_card_digits"]
-        # print(last_digits_from_db)
-        is_name_match = last_name_normalized == last_name_from_db
-        is_number_match = last_digits == last_digits_from_db
-        if is_name_match and is_number_match:
-            tool_context.state["user_authenticated"]=1
-            return {"status": "success", "is_authenticated": 'True'}
-        else:
-            tool_context.state["user_authenticated"]=0
-            return {"status": "success", "is_authenticated": 'False'}
-    except:
-        return {"status": "error", "error_message": f"Sorry, I am not to authenticate at the moment."}
-
-def pay_credit_card_bill(amount_to_pay: int,tool_context: ToolContext) -> dict:
-    """Pays the credit card bill for the user
-    Args:
-        amount_to_pay (int): amount to be paid by the user as credit card bill payment.
-
-    Returns:
-        dict: A dictionary providing whether the payment was completed.
-              Includes a 'status' key ('success' or 'error').
-              If 'success', includes a 'is_payment_completed' key.
-              If 'error', includes an 'error_message' key.
-    """
-    try:
-        min_amount = tool_context.state["user_credit_card_bill_min_pay"]
-        max_amount = tool_context.state["user_credit_card_bill"]
-        account_balance = tool_context.state["user_account_balance"]
-        if min_amount <= amount_to_pay <= max_amount:
-            tool_context.state["user_credit_card_bill"] = max_amount - amount_to_pay
-            tool_context.state["user_account_balance"] = account_balance - amount_to_pay
-            return {"status": "success", "is_payment_completed": 'True'}
-        else:
-            return {"status": "success", "is_payment_completed": 'False'}
-    except:
-        return {"status": "error", "error_message": f"Sorry, I am not able to pay credit card bill at the moment."}
-
-def update_address(house_number: int, street_name:str, zip_code:str, tool_context: ToolContext) -> dict:
-    """Updates the billing address for the user
-    Args:
-        house_number (int): house number in the updated address provided by the user.
-        street_name (str): street name in the updated address provided by the user.
-        zip_code (str): zip code in the updated address provided by the user.
-
-    Returns:
-        dict: A dictionary providing whether the address update was completed.
-              Includes a 'status' key ('success' or 'error').
-              If 'success', includes a 'is_address_updated' key.
-              If 'error', includes an 'error_message' key.
-    """
-    try:
-        tool_context.state["user_house_number"] = house_number
-        tool_context.state["user_street_name"] = street_name
-        tool_context.state["user_zip_code"] = zip_code
-        
-        return {"status": "success", "is_address_updated": 'True'}
-    except:
-        return {"status": "error", "error_message": f"Sorry, I am not able to update your billing address at the moment."}
 
 # --- 4. Configure Agents ---
-
-
-authentication_agent = LlmAgent(
-    model=MODEL_NAME,
-    name="authentication_agent",
-    description="Authenticates a user",
-    instruction=prompt_auth_task,
-    tools=[authenticate_user],
-)
-
-account_info_agent = LlmAgent(
-    model=MODEL_NAME,
-    name="account_info_agent",
-    description="Provides information about account and credit card bill and billing address",
-    instruction=prompt_account_info_task,
-)
-
-bill_payment_agent = LlmAgent(
-    model=MODEL_NAME,
-    name="bill_payment_agent",
-    description="Pays the credit card bill for the user",
-    instruction=prompt_make_payment_task,
-    tools=[pay_credit_card_bill],
-)
-
-address_update_agent = LlmAgent(
-    model=MODEL_NAME,
-    name="address_update_agent",
-    description="Updates the billing address for the user",
-    instruction=prompt_update_address_task,
-    tools=[update_address],
-)
-
-root_agent = LlmAgent(
-    model=MODEL_NAME,
-    name="root_agent",
-    description="Primary agent that talks to the user and orchestrates tasks",
-    instruction=prompt_system_task,
-    sub_agents=[authentication_agent,account_info_agent,bill_payment_agent,address_update_agent],
-)
 
 # --- 5. Set up Session Management and Runners ---
 session_service = InMemorySessionService()
 
-initial_state = {
-    "user_authenticated": 0,
-    "user_name": "John Doe",
-    "user_debit_card_digits": "1890",
-    "user_account_balance": 10000,
-    "user_credit_card_bill":1500,
-    "user_credit_card_bill_min_pay":100,
-    "user_house_number":42,
-    "user_street_name":"Oak St",
-    "user_zip_code":"89530"
-}
+initial_state = user_data
 
 # Create separate sessions for clarity, though not strictly necessary if context is managed
 session = session_service.create_session(app_name=APP_NAME, user_id=USER_ID,\
