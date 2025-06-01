@@ -1,5 +1,5 @@
-2025-05-31 21:43:26,113 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
-2025-05-31 21:43:26,114 - INFO - 
+2025-05-31 22:07:44,723 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
+2025-05-31 22:07:44,724 - INFO - 
 LLM Request:
 -----------------------------------------------------------
 System Instruction:
@@ -60,112 +60,30 @@ the function call.
 
 -----------------------------------------------------------
 Contents:
-{"parts":[{"text":"pay my bill"}],"role":"user"}
+{"parts":[{"text":"hello"}],"role":"user"}
 -----------------------------------------------------------
 Functions:
 transfer_to_agent: {'agent_name': {'type': <Type.STRING: 'STRING'>}} -> None
 -----------------------------------------------------------
 
-2025-05-31 21:43:26,114 - INFO - AFC is enabled with max remote calls: 10.
-2025-05-31 21:43:27,778 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
-2025-05-31 21:43:27,781 - WARNING - Warning: there are non-text parts in the response: ['function_call'],returning concatenated text result from text parts,check out the non text parts for full response from model.
-2025-05-31 21:43:27,781 - INFO - 
+2025-05-31 22:07:44,724 - INFO - AFC is enabled with max remote calls: 10.
+2025-05-31 22:07:46,813 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
+2025-05-31 22:07:46,816 - INFO - 
 LLM Response:
 -----------------------------------------------------------
 Text:
-Alright, before we proceed with paying your bill, I need to authenticate you. After all, can't have any digital bandits running around, can we?
-
------------------------------------------------------------
-Function calls:
-name: transfer_to_agent, args: {'agent_name': 'authentication_agent'}
------------------------------------------------------------
-Raw response:
-{"candidates":[{"content":{"parts":[{"text":"Alright, before we proceed with paying your bill, I need to authenticate you. After all, can't have any digital bandits running around, can we?\n"},{"function_call":{"args":{"agent_name":"authentication_agent"},"name":"transfer_to_agent"}}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.20470261573791504}],"create_time":"2025-06-01T01:43:26.975869Z","response_id":"PrA7aP3HO_C-gLUPq9uj-Qg","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":44,"candidates_tokens_details":[{"modality":"TEXT","token_count":44}],"prompt_token_count":466,"prompt_tokens_details":[{"modality":"TEXT","token_count":466}],"total_token_count":510,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
------------------------------------------------------------
-
-2025-05-31 21:43:27,803 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
-2025-05-31 21:43:27,803 - INFO - 
-LLM Request:
------------------------------------------------------------
-System Instruction:
-
-# IDENTITY and SYSTEM INSTRUCTION
-You are a helpful agent that engages with and authenticates a user.
-# CONTEXT
-Authenticate user only if 0 is 0, else output that authentication is already completed.
-
-You need the following mandatory fields from the user to authentiate him/her. Inform this requirement to the user.
-1. Last name of the user.
-2. Last 4 digits of debit card.
-
-Extract the mandatory fields once user provides and call the relevant tool.
-
-
-You are an agent. Your internal name is "authentication_agent".
-
- The description about you is "Authenticates a user"
-
-
-You have a list of other agents to transfer to:
-
-
-Agent name: root_agent
-Agent description: Primary agent that talks to the user and orchestrates tasks
-
-
-Agent name: account_info_agent
-Agent description: Provides information about account and credit card bill and billing address
-
-
-Agent name: bill_payment_agent
-Agent description: Pays the credit card bill for the user
-
-
-Agent name: address_update_agent
-Agent description: Updates the billing address for the user
-
-
-If you are the best to answer the question according to your description, you
-can answer it.
-
-If another agent is better for answering the question according to its
-description, call `transfer_to_agent` function to transfer the
-question to that agent. When transferring, do not generate any text other than
-the function call.
-
-Your parent agent is root_agent. If neither the other agents nor
-you are best for answering the question according to the descriptions, transfer
-to your parent agent. If you don't have parent agent, try answer by yourself.
-
------------------------------------------------------------
-Contents:
-{"parts":[{"text":"pay my bill"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we proceed with paying your bill, I need to authenticate you. After all, can't have any digital bandits running around, can we?\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[root_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
------------------------------------------------------------
-Functions:
-transfer_to_agent: {'agent_name': {'type': <Type.STRING: 'STRING'>}} -> None
-authenticate_user: {'last_name': {'type': <Type.STRING: 'STRING'>}, 'last_digits': {'type': <Type.STRING: 'STRING'>}} -> {'type': <Type.OBJECT: 'OBJECT'>}
------------------------------------------------------------
-
-2025-05-31 21:43:27,803 - INFO - AFC is enabled with max remote calls: 10.
-2025-05-31 21:43:29,006 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
-2025-05-31 21:43:29,009 - INFO - 
-LLM Response:
------------------------------------------------------------
-Text:
-Okay, I can help with that. To authenticate you, I need your last name and the last 4 digits of your debit card. Please provide them.
+Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?
 
 -----------------------------------------------------------
 Function calls:
 
 -----------------------------------------------------------
 Raw response:
-{"candidates":[{"content":{"parts":[{"text":"Okay, I can help with that. To authenticate you, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.16956522970488577}],"create_time":"2025-06-01T01:43:28.604188Z","response_id":"QLA7aJzwJMqF1dkPq8eZ2As","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":33,"candidates_tokens_details":[{"modality":"TEXT","token_count":33}],"prompt_token_count":586,"prompt_tokens_details":[{"modality":"TEXT","token_count":586}],"total_token_count":619,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
+{"candidates":[{"content":{"parts":[{"text":"Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.07200835016038683}],"create_time":"2025-06-01T02:07:46.204733Z","response_id":"8rU7aL2_DOPPnvgPkLyl8Qg","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":45,"candidates_tokens_details":[{"modality":"TEXT","token_count":45}],"prompt_token_count":464,"prompt_tokens_details":[{"modality":"TEXT","token_count":464}],"total_token_count":509,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
 -----------------------------------------------------------
 
-2025-05-31 21:43:29,011 - INFO - Session State Snapshot:
-2025-05-31 21:43:29,011 - INFO - {
+2025-05-31 22:07:46,817 - INFO - Session State Snapshot:
+2025-05-31 22:07:46,817 - INFO - {
   "user_authenticated": 0,
   "user_name": "John Doe",
   "user_debit_card_digits": "1890",
@@ -176,13 +94,98 @@ Raw response:
   "user_street_name": "Oak St",
   "user_zip_code": "89530"
 }
-2025-05-31 21:43:29,011 - INFO - Event Stream:
-2025-05-31 21:43:29,011 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='pay my bill')] role='user'
-2025-05-31 21:43:29,011 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Alright, before we proceed with paying your bill, I need to authenticate you. After all, can't have any digital bandits running around, can we?\n"), Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-4f523b25-a45d-438d-a431-3cfb6f2bea98', args={'agent_name': 'authentication_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
-2025-05-31 21:43:29,011 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-4f523b25-a45d-438d-a431-3cfb6f2bea98', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
-2025-05-31 21:43:29,011 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay, I can help with that. To authenticate you, I need your last name and the last 4 digits of your debit card. Please provide them.\n')] role='model'
-2025-05-31 21:43:52,807 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
-2025-05-31 21:43:52,807 - INFO - 
+2025-05-31 22:07:46,817 - INFO - Event Stream:
+2025-05-31 22:07:46,817 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='hello')] role='user'
+2025-05-31 22:07:46,817 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n")] role='model'
+2025-05-31 22:08:02,859 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
+2025-05-31 22:08:02,859 - INFO - 
+LLM Request:
+-----------------------------------------------------------
+System Instruction:
+
+# IDENTITY and SYSTEM INSTRUCTION
+You are a polite yet witty customer bot "Chad" who is an expert at interacting with user and gathering information from them in order to complete certain tasks. 
+If asked, inform what tasks you will be able to perform for the user.
+If the user tries to engage them in any other conversation, bring them to the current task in a polite and humorous way.
+
+# CONTEXT
+Following are the tasks that you do:
+TASK1: Provide account balance.
+TASK2: Pay credit card bill.
+TASK3: Update billing details like address.
+
+## GUIDELINES:
+You MUST authenticate the user before doing any task for him/her. 
+DO NOT make up any information, if you don't know certain information, tell the customer that you don't access to that information. 
+
+You have the following specialized sub-agents:
+1. authentication_agent: Authenticates a user
+2. account_info_agent: Provides information about account and credit card bill and billing address
+3. bill_payment_agent: Pays the credit card bill for the user
+4. address_update_agent: Updates the billing address for the user
+
+
+You are an agent. Your internal name is "root_agent".
+
+ The description about you is "Primary agent that talks to the user and orchestrates tasks"
+
+
+You have a list of other agents to transfer to:
+
+
+Agent name: authentication_agent
+Agent description: Authenticates a user
+
+
+Agent name: account_info_agent
+Agent description: Provides information about account and credit card bill and billing address
+
+
+Agent name: bill_payment_agent
+Agent description: Pays the credit card bill for the user
+
+
+Agent name: address_update_agent
+Agent description: Updates the billing address for the user
+
+
+If you are the best to answer the question according to your description, you
+can answer it.
+
+If another agent is better for answering the question according to its
+description, call `transfer_to_agent` function to transfer the
+question to that agent. When transferring, do not generate any text other than
+the function call.
+
+-----------------------------------------------------------
+Contents:
+{"parts":[{"text":"hello"}],"role":"user"}
+{"parts":[{"text":"Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n"}],"role":"model"}
+{"parts":[{"text":"what's my balance"}],"role":"user"}
+-----------------------------------------------------------
+Functions:
+transfer_to_agent: {'agent_name': {'type': <Type.STRING: 'STRING'>}} -> None
+-----------------------------------------------------------
+
+2025-05-31 22:08:02,859 - INFO - AFC is enabled with max remote calls: 10.
+2025-05-31 22:08:04,360 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
+2025-05-31 22:08:04,363 - WARNING - Warning: there are non-text parts in the response: ['function_call'],returning concatenated text result from text parts,check out the non text parts for full response from model.
+2025-05-31 22:08:04,363 - INFO - 
+LLM Response:
+-----------------------------------------------------------
+Text:
+Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!
+
+-----------------------------------------------------------
+Function calls:
+name: transfer_to_agent, args: {'agent_name': 'authentication_agent'}
+-----------------------------------------------------------
+Raw response:
+{"candidates":[{"content":{"parts":[{"text":"Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"},{"function_call":{"args":{"agent_name":"authentication_agent"},"name":"transfer_to_agent"}}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.04116052105313256}],"create_time":"2025-06-01T02:08:03.642812Z","response_id":"A7Y7aPydJ-Do698P_9yzmQY","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":42,"candidates_tokens_details":[{"modality":"TEXT","token_count":42}],"prompt_token_count":514,"prompt_tokens_details":[{"modality":"TEXT","token_count":514}],"total_token_count":556,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
+-----------------------------------------------------------
+
+2025-05-31 22:08:04,389 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
+2025-05-31 22:08:04,390 - INFO - 
 LLM Request:
 -----------------------------------------------------------
 System Instruction:
@@ -237,35 +240,139 @@ to your parent agent. If you don't have parent agent, try answer by yourself.
 
 -----------------------------------------------------------
 Contents:
-{"parts":[{"text":"pay my bill"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we proceed with paying your bill, I need to authenticate you. After all, can't have any digital bandits running around, can we?\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
+{"parts":[{"text":"hello"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n"}],"role":"user"}
+{"parts":[{"text":"what's my balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
 {"parts":[{"text":"For context:"},{"text":"[root_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
-{"parts":[{"text":"Okay, I can help with that. To authenticate you, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"model"}
-{"parts":[{"text":"doe 1890"}],"role":"user"}
 -----------------------------------------------------------
 Functions:
 transfer_to_agent: {'agent_name': {'type': <Type.STRING: 'STRING'>}} -> None
 authenticate_user: {'last_name': {'type': <Type.STRING: 'STRING'>}, 'last_digits': {'type': <Type.STRING: 'STRING'>}} -> {'type': <Type.OBJECT: 'OBJECT'>}
 -----------------------------------------------------------
 
-2025-05-31 21:43:52,807 - INFO - AFC is enabled with max remote calls: 10.
-2025-05-31 21:43:53,991 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
-2025-05-31 21:43:53,993 - WARNING - Warning: there are non-text parts in the response: ['function_call'],returning concatenated text result from text parts,check out the non text parts for full response from model.
-2025-05-31 21:43:53,994 - INFO - 
+2025-05-31 22:08:04,390 - INFO - AFC is enabled with max remote calls: 10.
+2025-05-31 22:08:05,725 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
+2025-05-31 22:08:05,727 - INFO - 
+LLM Response:
+-----------------------------------------------------------
+Text:
+Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.
+
+-----------------------------------------------------------
+Function calls:
+
+-----------------------------------------------------------
+Raw response:
+{"candidates":[{"content":{"parts":[{"text":"Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.10981415785275973}],"create_time":"2025-06-01T02:08:05.171306Z","response_id":"BbY7aKq6CsqF1dkPq8eZ2As","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":26,"candidates_tokens_details":[{"modality":"TEXT","token_count":26}],"prompt_token_count":642,"prompt_tokens_details":[{"modality":"TEXT","token_count":642}],"total_token_count":668,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
+-----------------------------------------------------------
+
+2025-05-31 22:08:05,729 - INFO - Session State Snapshot:
+2025-05-31 22:08:05,729 - INFO - {
+  "user_authenticated": 0,
+  "user_name": "John Doe",
+  "user_debit_card_digits": "1890",
+  "user_account_balance": 10000,
+  "user_credit_card_bill": 1500,
+  "user_credit_card_bill_min_pay": 100,
+  "user_house_number": 42,
+  "user_street_name": "Oak St",
+  "user_zip_code": "89530"
+}
+2025-05-31 22:08:05,729 - INFO - Event Stream:
+2025-05-31 22:08:05,729 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='hello')] role='user'
+2025-05-31 22:08:05,730 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n")] role='model'
+2025-05-31 22:08:05,730 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="what's my balance")] role='user'
+2025-05-31 22:08:05,730 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"), Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-17cf77ae-501f-47f3-b385-4e974895ae85', args={'agent_name': 'authentication_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:08:05,730 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-17cf77ae-501f-47f3-b385-4e974895ae85', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:08:05,730 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n')] role='model'
+2025-05-31 22:08:15,332 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
+2025-05-31 22:08:15,332 - INFO - 
+LLM Request:
+-----------------------------------------------------------
+System Instruction:
+
+# IDENTITY and SYSTEM INSTRUCTION
+You are a helpful agent that engages with and authenticates a user.
+# CONTEXT
+Authenticate user only if 0 is 0, else output that authentication is already completed.
+
+You need the following mandatory fields from the user to authentiate him/her. Inform this requirement to the user.
+1. Last name of the user.
+2. Last 4 digits of debit card.
+
+Extract the mandatory fields once user provides and call the relevant tool.
+
+
+You are an agent. Your internal name is "authentication_agent".
+
+ The description about you is "Authenticates a user"
+
+
+You have a list of other agents to transfer to:
+
+
+Agent name: root_agent
+Agent description: Primary agent that talks to the user and orchestrates tasks
+
+
+Agent name: account_info_agent
+Agent description: Provides information about account and credit card bill and billing address
+
+
+Agent name: bill_payment_agent
+Agent description: Pays the credit card bill for the user
+
+
+Agent name: address_update_agent
+Agent description: Updates the billing address for the user
+
+
+If you are the best to answer the question according to your description, you
+can answer it.
+
+If another agent is better for answering the question according to its
+description, call `transfer_to_agent` function to transfer the
+question to that agent. When transferring, do not generate any text other than
+the function call.
+
+Your parent agent is root_agent. If neither the other agents nor
+you are best for answering the question according to the descriptions, transfer
+to your parent agent. If you don't have parent agent, try answer by yourself.
+
+-----------------------------------------------------------
+Contents:
+{"parts":[{"text":"hello"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n"}],"role":"user"}
+{"parts":[{"text":"what's my balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
+{"parts":[{"text":"Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"model"}
+{"parts":[{"text":"doe, 1890"}],"role":"user"}
+-----------------------------------------------------------
+Functions:
+transfer_to_agent: {'agent_name': {'type': <Type.STRING: 'STRING'>}} -> None
+authenticate_user: {'last_name': {'type': <Type.STRING: 'STRING'>}, 'last_digits': {'type': <Type.STRING: 'STRING'>}} -> {'type': <Type.OBJECT: 'OBJECT'>}
+-----------------------------------------------------------
+
+2025-05-31 22:08:15,332 - INFO - AFC is enabled with max remote calls: 10.
+2025-05-31 22:08:16,783 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
+2025-05-31 22:08:16,785 - WARNING - Warning: there are non-text parts in the response: ['function_call'],returning concatenated text result from text parts,check out the non text parts for full response from model.
+2025-05-31 22:08:16,785 - INFO - 
 LLM Response:
 -----------------------------------------------------------
 Text:
 None
 -----------------------------------------------------------
 Function calls:
-name: authenticate_user, args: {'last_digits': '1890', 'last_name': 'doe'}
+name: authenticate_user, args: {'last_name': 'doe', 'last_digits': '1890'}
 -----------------------------------------------------------
 Raw response:
-{"candidates":[{"content":{"parts":[{"function_call":{"args":{"last_digits":"1890","last_name":"doe"},"name":"authenticate_user"}}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.007167715047086988}],"create_time":"2025-06-01T01:43:53.553186Z","response_id":"WbA7aOLhIcqF1dkPq8eZ2As","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":14,"candidates_tokens_details":[{"modality":"TEXT","token_count":14}],"prompt_token_count":625,"prompt_tokens_details":[{"modality":"TEXT","token_count":625}],"total_token_count":639,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
+{"candidates":[{"content":{"parts":[{"function_call":{"args":{"last_name":"doe","last_digits":"1890"},"name":"authenticate_user"}}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.007389545440673828}],"create_time":"2025-06-01T02:08:16.127192Z","response_id":"ELY7aNjhB-Do698P_9yzmQY","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":14,"candidates_tokens_details":[{"modality":"TEXT","token_count":14}],"prompt_token_count":675,"prompt_tokens_details":[{"modality":"TEXT","token_count":675}],"total_token_count":689,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
 -----------------------------------------------------------
 
-2025-05-31 21:43:54,024 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
-2025-05-31 21:43:54,025 - INFO - 
+2025-05-31 22:08:16,817 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
+2025-05-31 22:08:16,817 - INFO - 
 LLM Request:
 -----------------------------------------------------------
 System Instruction:
@@ -320,12 +427,14 @@ to your parent agent. If you don't have parent agent, try answer by yourself.
 
 -----------------------------------------------------------
 Contents:
-{"parts":[{"text":"pay my bill"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we proceed with paying your bill, I need to authenticate you. After all, can't have any digital bandits running around, can we?\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
+{"parts":[{"text":"hello"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n"}],"role":"user"}
+{"parts":[{"text":"what's my balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
 {"parts":[{"text":"For context:"},{"text":"[root_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
-{"parts":[{"text":"Okay, I can help with that. To authenticate you, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"model"}
-{"parts":[{"text":"doe 1890"}],"role":"user"}
-{"parts":[{"function_call":{"args":{"last_digits":"1890","last_name":"doe"},"name":"authenticate_user"}}],"role":"model"}
+{"parts":[{"text":"Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"model"}
+{"parts":[{"text":"doe, 1890"}],"role":"user"}
+{"parts":[{"function_call":{"args":{"last_name":"doe","last_digits":"1890"},"name":"authenticate_user"}}],"role":"model"}
 {"parts":[{"function_response":{"name":"authenticate_user","response":{"status":"success","is_authenticated":"True"}}}],"role":"user"}
 -----------------------------------------------------------
 Functions:
@@ -333,9 +442,9 @@ transfer_to_agent: {'agent_name': {'type': <Type.STRING: 'STRING'>}} -> None
 authenticate_user: {'last_name': {'type': <Type.STRING: 'STRING'>}, 'last_digits': {'type': <Type.STRING: 'STRING'>}} -> {'type': <Type.OBJECT: 'OBJECT'>}
 -----------------------------------------------------------
 
-2025-05-31 21:43:54,025 - INFO - AFC is enabled with max remote calls: 10.
-2025-05-31 21:43:55,118 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
-2025-05-31 21:43:55,121 - INFO - 
+2025-05-31 22:08:16,817 - INFO - AFC is enabled with max remote calls: 10.
+2025-05-31 22:08:18,319 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
+2025-05-31 22:08:18,321 - INFO - 
 LLM Response:
 -----------------------------------------------------------
 Text:
@@ -346,11 +455,11 @@ Function calls:
 
 -----------------------------------------------------------
 Raw response:
-{"candidates":[{"content":{"parts":[{"text":"Great! Authentication is complete.\n"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.4034670421055385}],"create_time":"2025-06-01T01:43:54.780592Z","response_id":"WrA7aLDSL_C-gLUPq9uj-Qg","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":7,"candidates_tokens_details":[{"modality":"TEXT","token_count":7}],"prompt_token_count":648,"prompt_tokens_details":[{"modality":"TEXT","token_count":648}],"total_token_count":655,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
+{"candidates":[{"content":{"parts":[{"text":"Great! Authentication is complete.\n"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.03836598140852792}],"create_time":"2025-06-01T02:08:17.875042Z","response_id":"EbY7aKK0NZyV1dkPrKWakAc","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":7,"candidates_tokens_details":[{"modality":"TEXT","token_count":7}],"prompt_token_count":698,"prompt_tokens_details":[{"modality":"TEXT","token_count":698}],"total_token_count":705,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
 -----------------------------------------------------------
 
-2025-05-31 21:43:55,122 - INFO - Session State Snapshot:
-2025-05-31 21:43:55,122 - INFO - {
+2025-05-31 22:08:18,323 - INFO - Session State Snapshot:
+2025-05-31 22:08:18,323 - INFO - {
   "user_authenticated": 1,
   "user_name": "John Doe",
   "user_debit_card_digits": "1890",
@@ -361,17 +470,19 @@ Raw response:
   "user_street_name": "Oak St",
   "user_zip_code": "89530"
 }
-2025-05-31 21:43:55,122 - INFO - Event Stream:
-2025-05-31 21:43:55,122 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='pay my bill')] role='user'
-2025-05-31 21:43:55,122 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Alright, before we proceed with paying your bill, I need to authenticate you. After all, can't have any digital bandits running around, can we?\n"), Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-4f523b25-a45d-438d-a431-3cfb6f2bea98', args={'agent_name': 'authentication_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
-2025-05-31 21:43:55,122 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-4f523b25-a45d-438d-a431-3cfb6f2bea98', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
-2025-05-31 21:43:55,122 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay, I can help with that. To authenticate you, I need your last name and the last 4 digits of your debit card. Please provide them.\n')] role='model'
-2025-05-31 21:43:55,122 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='doe 1890')] role='user'
-2025-05-31 21:43:55,122 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-549bd9af-2ef4-4d48-ba92-2e9ba497d2b5', args={'last_digits': '1890', 'last_name': 'doe'}, name='authenticate_user'), function_response=None, inline_data=None, text=None)] role='model'
-2025-05-31 21:43:55,122 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-549bd9af-2ef4-4d48-ba92-2e9ba497d2b5', name='authenticate_user', response={'status': 'success', 'is_authenticated': 'True'}), inline_data=None, text=None)] role='user'
-2025-05-31 21:43:55,122 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Great! Authentication is complete.\n')] role='model'
-2025-05-31 21:44:03,620 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
-2025-05-31 21:44:03,621 - INFO - 
+2025-05-31 22:08:18,323 - INFO - Event Stream:
+2025-05-31 22:08:18,323 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='hello')] role='user'
+2025-05-31 22:08:18,323 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n")] role='model'
+2025-05-31 22:08:18,324 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="what's my balance")] role='user'
+2025-05-31 22:08:18,324 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"), Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-17cf77ae-501f-47f3-b385-4e974895ae85', args={'agent_name': 'authentication_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:08:18,324 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-17cf77ae-501f-47f3-b385-4e974895ae85', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:08:18,324 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n')] role='model'
+2025-05-31 22:08:18,324 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='doe, 1890')] role='user'
+2025-05-31 22:08:18,324 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-8cad2cca-c4df-4626-8f4c-9291432d24a0', args={'last_name': 'doe', 'last_digits': '1890'}, name='authenticate_user'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:08:18,324 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-8cad2cca-c4df-4626-8f4c-9291432d24a0', name='authenticate_user', response={'status': 'success', 'is_authenticated': 'True'}), inline_data=None, text=None)] role='user'
+2025-05-31 22:08:18,324 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Great! Authentication is complete.\n')] role='model'
+2025-05-31 22:08:30,492 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
+2025-05-31 22:08:30,493 - INFO - 
 LLM Request:
 -----------------------------------------------------------
 System Instruction:
@@ -426,25 +537,226 @@ to your parent agent. If you don't have parent agent, try answer by yourself.
 
 -----------------------------------------------------------
 Contents:
-{"parts":[{"text":"pay my bill"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we proceed with paying your bill, I need to authenticate you. After all, can't have any digital bandits running around, can we?\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
+{"parts":[{"text":"hello"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n"}],"role":"user"}
+{"parts":[{"text":"what's my balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
 {"parts":[{"text":"For context:"},{"text":"[root_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
-{"parts":[{"text":"Okay, I can help with that. To authenticate you, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"model"}
-{"parts":[{"text":"doe 1890"}],"role":"user"}
-{"parts":[{"function_call":{"args":{"last_digits":"1890","last_name":"doe"},"name":"authenticate_user"}}],"role":"model"}
+{"parts":[{"text":"Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"model"}
+{"parts":[{"text":"doe, 1890"}],"role":"user"}
+{"parts":[{"function_call":{"args":{"last_name":"doe","last_digits":"1890"},"name":"authenticate_user"}}],"role":"model"}
 {"parts":[{"function_response":{"name":"authenticate_user","response":{"status":"success","is_authenticated":"True"}}}],"role":"user"}
 {"parts":[{"text":"Great! Authentication is complete.\n"}],"role":"model"}
-{"parts":[{"text":"well, pay my bill"}],"role":"user"}
+{"parts":[{"text":"well, what's my account balance"}],"role":"user"}
 -----------------------------------------------------------
 Functions:
 transfer_to_agent: {'agent_name': {'type': <Type.STRING: 'STRING'>}} -> None
 authenticate_user: {'last_name': {'type': <Type.STRING: 'STRING'>}, 'last_digits': {'type': <Type.STRING: 'STRING'>}} -> {'type': <Type.OBJECT: 'OBJECT'>}
 -----------------------------------------------------------
 
-2025-05-31 21:44:03,622 - INFO - AFC is enabled with max remote calls: 10.
-2025-05-31 21:44:04,950 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
-2025-05-31 21:44:04,952 - WARNING - Warning: there are non-text parts in the response: ['function_call'],returning concatenated text result from text parts,check out the non text parts for full response from model.
-2025-05-31 21:44:04,952 - INFO - 
+2025-05-31 22:08:30,494 - INFO - AFC is enabled with max remote calls: 10.
+2025-05-31 22:08:31,833 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
+2025-05-31 22:08:31,835 - WARNING - Warning: there are non-text parts in the response: ['function_call'],returning concatenated text result from text parts,check out the non text parts for full response from model.
+2025-05-31 22:08:31,836 - INFO - 
+LLM Response:
+-----------------------------------------------------------
+Text:
+None
+-----------------------------------------------------------
+Function calls:
+name: transfer_to_agent, args: {'agent_name': 'account_info_agent'}
+-----------------------------------------------------------
+Raw response:
+{"candidates":[{"content":{"parts":[{"function_call":{"args":{"agent_name":"account_info_agent"},"name":"transfer_to_agent"}}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.0006949428039101454}],"create_time":"2025-06-01T02:08:31.321515Z","response_id":"H7Y7aOvPE47dgLUPtoHTgQY","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":13,"candidates_tokens_details":[{"modality":"TEXT","token_count":13}],"prompt_token_count":713,"prompt_tokens_details":[{"modality":"TEXT","token_count":713}],"total_token_count":726,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
+-----------------------------------------------------------
+
+2025-05-31 22:08:31,854 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
+2025-05-31 22:08:31,855 - INFO - 
+LLM Request:
+-----------------------------------------------------------
+System Instruction:
+
+# CONTEXT
+Following are account and credit card bill payment and address related information for the user from the Database. Answer any query that the user might have from this information
+user account balance (in dollars) : 10000
+user credit card bill (in dollars) : 1500
+user billing address: 42, Oak St, 89530
+
+
+You are an agent. Your internal name is "account_info_agent".
+
+ The description about you is "Provides information about account and credit card bill and billing address"
+
+
+You have a list of other agents to transfer to:
+
+
+Agent name: root_agent
+Agent description: Primary agent that talks to the user and orchestrates tasks
+
+
+Agent name: authentication_agent
+Agent description: Authenticates a user
+
+
+Agent name: bill_payment_agent
+Agent description: Pays the credit card bill for the user
+
+
+Agent name: address_update_agent
+Agent description: Updates the billing address for the user
+
+
+If you are the best to answer the question according to your description, you
+can answer it.
+
+If another agent is better for answering the question according to its
+description, call `transfer_to_agent` function to transfer the
+question to that agent. When transferring, do not generate any text other than
+the function call.
+
+Your parent agent is root_agent. If neither the other agents nor
+you are best for answering the question according to the descriptions, transfer
+to your parent agent. If you don't have parent agent, try answer by yourself.
+
+-----------------------------------------------------------
+Contents:
+{"parts":[{"text":"hello"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n"}],"role":"user"}
+{"parts":[{"text":"what's my balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"user"}
+{"parts":[{"text":"doe, 1890"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `authenticate_user` with parameters: {'last_name': 'doe', 'last_digits': '1890'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] `authenticate_user` tool returned result: {'status': 'success', 'is_authenticated': 'True'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Great! Authentication is complete.\n"}],"role":"user"}
+{"parts":[{"text":"well, what's my account balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'account_info_agent'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
+-----------------------------------------------------------
+Functions:
+transfer_to_agent: {'agent_name': {'type': <Type.STRING: 'STRING'>}} -> None
+-----------------------------------------------------------
+
+2025-05-31 22:08:31,855 - INFO - AFC is enabled with max remote calls: 10.
+2025-05-31 22:08:33,394 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
+2025-05-31 22:08:33,397 - INFO - 
+LLM Response:
+-----------------------------------------------------------
+Text:
+Your account balance is $10000.
+
+-----------------------------------------------------------
+Function calls:
+
+-----------------------------------------------------------
+Raw response:
+{"candidates":[{"content":{"parts":[{"text":"Your account balance is $10000.\n"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.000016742482936630648}],"create_time":"2025-06-01T02:08:32.813075Z","response_id":"ILY7aJPQMeDo698P_9yzmQY","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":12,"candidates_tokens_details":[{"modality":"TEXT","token_count":12}],"prompt_token_count":685,"prompt_tokens_details":[{"modality":"TEXT","token_count":685}],"total_token_count":697,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
+-----------------------------------------------------------
+
+2025-05-31 22:08:33,399 - INFO - Session State Snapshot:
+2025-05-31 22:08:33,399 - INFO - {
+  "user_authenticated": 1,
+  "user_name": "John Doe",
+  "user_debit_card_digits": "1890",
+  "user_account_balance": 10000,
+  "user_credit_card_bill": 1500,
+  "user_credit_card_bill_min_pay": 100,
+  "user_house_number": 42,
+  "user_street_name": "Oak St",
+  "user_zip_code": "89530"
+}
+2025-05-31 22:08:33,399 - INFO - Event Stream:
+2025-05-31 22:08:33,399 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='hello')] role='user'
+2025-05-31 22:08:33,399 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n")] role='model'
+2025-05-31 22:08:33,399 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="what's my balance")] role='user'
+2025-05-31 22:08:33,399 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"), Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-17cf77ae-501f-47f3-b385-4e974895ae85', args={'agent_name': 'authentication_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:08:33,400 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-17cf77ae-501f-47f3-b385-4e974895ae85', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:08:33,400 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n')] role='model'
+2025-05-31 22:08:33,400 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='doe, 1890')] role='user'
+2025-05-31 22:08:33,400 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-8cad2cca-c4df-4626-8f4c-9291432d24a0', args={'last_name': 'doe', 'last_digits': '1890'}, name='authenticate_user'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:08:33,400 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-8cad2cca-c4df-4626-8f4c-9291432d24a0', name='authenticate_user', response={'status': 'success', 'is_authenticated': 'True'}), inline_data=None, text=None)] role='user'
+2025-05-31 22:08:33,400 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Great! Authentication is complete.\n')] role='model'
+2025-05-31 22:08:33,400 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="well, what's my account balance")] role='user'
+2025-05-31 22:08:33,400 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-d698fb88-804f-4497-b2d7-e8deb95da887', args={'agent_name': 'account_info_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:08:33,400 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-d698fb88-804f-4497-b2d7-e8deb95da887', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:08:33,400 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Your account balance is $10000.\n')] role='model'
+2025-05-31 22:08:49,718 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
+2025-05-31 22:08:49,718 - INFO - 
+LLM Request:
+-----------------------------------------------------------
+System Instruction:
+
+# CONTEXT
+Following are account and credit card bill payment and address related information for the user from the Database. Answer any query that the user might have from this information
+user account balance (in dollars) : 10000
+user credit card bill (in dollars) : 1500
+user billing address: 42, Oak St, 89530
+
+
+You are an agent. Your internal name is "account_info_agent".
+
+ The description about you is "Provides information about account and credit card bill and billing address"
+
+
+You have a list of other agents to transfer to:
+
+
+Agent name: root_agent
+Agent description: Primary agent that talks to the user and orchestrates tasks
+
+
+Agent name: authentication_agent
+Agent description: Authenticates a user
+
+
+Agent name: bill_payment_agent
+Agent description: Pays the credit card bill for the user
+
+
+Agent name: address_update_agent
+Agent description: Updates the billing address for the user
+
+
+If you are the best to answer the question according to your description, you
+can answer it.
+
+If another agent is better for answering the question according to its
+description, call `transfer_to_agent` function to transfer the
+question to that agent. When transferring, do not generate any text other than
+the function call.
+
+Your parent agent is root_agent. If neither the other agents nor
+you are best for answering the question according to the descriptions, transfer
+to your parent agent. If you don't have parent agent, try answer by yourself.
+
+-----------------------------------------------------------
+Contents:
+{"parts":[{"text":"hello"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n"}],"role":"user"}
+{"parts":[{"text":"what's my balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"user"}
+{"parts":[{"text":"doe, 1890"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `authenticate_user` with parameters: {'last_name': 'doe', 'last_digits': '1890'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] `authenticate_user` tool returned result: {'status': 'success', 'is_authenticated': 'True'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Great! Authentication is complete.\n"}],"role":"user"}
+{"parts":[{"text":"well, what's my account balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'account_info_agent'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
+{"parts":[{"text":"Your account balance is $10000.\n"}],"role":"model"}
+{"parts":[{"text":"pay my credit card bill"}],"role":"user"}
+-----------------------------------------------------------
+Functions:
+transfer_to_agent: {'agent_name': {'type': <Type.STRING: 'STRING'>}} -> None
+-----------------------------------------------------------
+
+2025-05-31 22:08:49,718 - INFO - AFC is enabled with max remote calls: 10.
+2025-05-31 22:08:51,185 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
+2025-05-31 22:08:51,188 - WARNING - Warning: there are non-text parts in the response: ['function_call'],returning concatenated text result from text parts,check out the non text parts for full response from model.
+2025-05-31 22:08:51,188 - INFO - 
 LLM Response:
 -----------------------------------------------------------
 Text:
@@ -454,11 +766,11 @@ Function calls:
 name: transfer_to_agent, args: {'agent_name': 'bill_payment_agent'}
 -----------------------------------------------------------
 Raw response:
-{"candidates":[{"content":{"parts":[{"function_call":{"args":{"agent_name":"bill_payment_agent"},"name":"transfer_to_agent"}}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.007693548615162189}],"create_time":"2025-06-01T01:44:04.570847Z","response_id":"ZLA7aN_rItnChMIPit-MkAU","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":13,"candidates_tokens_details":[{"modality":"TEXT","token_count":13}],"prompt_token_count":660,"prompt_tokens_details":[{"modality":"TEXT","token_count":660}],"total_token_count":673,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
+{"candidates":[{"content":{"parts":[{"function_call":{"args":{"agent_name":"bill_payment_agent"},"name":"transfer_to_agent"}}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.038723427515763506}],"create_time":"2025-06-01T02:08:50.688270Z","response_id":"MrY7aI6BKuDo698P_9yzmQY","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":13,"candidates_tokens_details":[{"modality":"TEXT","token_count":13}],"prompt_token_count":702,"prompt_tokens_details":[{"modality":"TEXT","token_count":702}],"total_token_count":715,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
 -----------------------------------------------------------
 
-2025-05-31 21:44:04,980 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
-2025-05-31 21:44:04,980 - INFO - 
+2025-05-31 22:08:51,218 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
+2025-05-31 22:08:51,218 - INFO - 
 LLM Request:
 -----------------------------------------------------------
 System Instruction:
@@ -517,41 +829,47 @@ to your parent agent. If you don't have parent agent, try answer by yourself.
 
 -----------------------------------------------------------
 Contents:
-{"parts":[{"text":"pay my bill"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we proceed with paying your bill, I need to authenticate you. After all, can't have any digital bandits running around, can we?\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
+{"parts":[{"text":"hello"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n"}],"role":"user"}
+{"parts":[{"text":"what's my balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
 {"parts":[{"text":"For context:"},{"text":"[root_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Okay, I can help with that. To authenticate you, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"user"}
-{"parts":[{"text":"doe 1890"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `authenticate_user` with parameters: {'last_digits': '1890', 'last_name': 'doe'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"user"}
+{"parts":[{"text":"doe, 1890"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `authenticate_user` with parameters: {'last_name': 'doe', 'last_digits': '1890'}"}],"role":"user"}
 {"parts":[{"text":"For context:"},{"text":"[authentication_agent] `authenticate_user` tool returned result: {'status': 'success', 'is_authenticated': 'True'}"}],"role":"user"}
 {"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Great! Authentication is complete.\n"}],"role":"user"}
-{"parts":[{"text":"well, pay my bill"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'bill_payment_agent'}"}],"role":"user"}
+{"parts":[{"text":"well, what's my account balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'account_info_agent'}"}],"role":"user"}
 {"parts":[{"text":"For context:"},{"text":"[authentication_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[account_info_agent] said: Your account balance is $10000.\n"}],"role":"user"}
+{"parts":[{"text":"pay my credit card bill"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[account_info_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'bill_payment_agent'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[account_info_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
 -----------------------------------------------------------
 Functions:
 transfer_to_agent: {'agent_name': {'type': <Type.STRING: 'STRING'>}} -> None
 pay_credit_card_bill: {'amount_to_pay': {'type': <Type.INTEGER: 'INTEGER'>}} -> {'type': <Type.OBJECT: 'OBJECT'>}
 -----------------------------------------------------------
 
-2025-05-31 21:44:04,980 - INFO - AFC is enabled with max remote calls: 10.
-2025-05-31 21:44:06,303 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
-2025-05-31 21:44:06,305 - INFO - 
+2025-05-31 22:08:51,218 - INFO - AFC is enabled with max remote calls: 10.
+2025-05-31 22:08:52,670 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
+2025-05-31 22:08:52,672 - INFO - 
 LLM Response:
 -----------------------------------------------------------
 Text:
-Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount between $100 and $1500?
+Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount? Please specify the amount you'd like to pay. It must be between $100 and $1500.
 
 -----------------------------------------------------------
 Function calls:
 
 -----------------------------------------------------------
 Raw response:
-{"candidates":[{"content":{"parts":[{"text":"Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount between $100 and $1500?\n"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.052668395042419436}],"create_time":"2025-06-01T01:44:05.825621Z","response_id":"ZbA7aJWyMoCI1dkPg6e86A4","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":50,"candidates_tokens_details":[{"modality":"TEXT","token_count":50}],"prompt_token_count":880,"prompt_tokens_details":[{"modality":"TEXT","token_count":880}],"total_token_count":930,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
+{"candidates":[{"content":{"parts":[{"text":"Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount? Please specify the amount you'd like to pay. It must be between $100 and $1500.\n"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.09105297235342172}],"create_time":"2025-06-01T02:08:52.064155Z","response_id":"NLY7aJv1A9G7ld8PgffmkQo","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":65,"candidates_tokens_details":[{"modality":"TEXT","token_count":65}],"prompt_token_count":1018,"prompt_tokens_details":[{"modality":"TEXT","token_count":1018}],"total_token_count":1083,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
 -----------------------------------------------------------
 
-2025-05-31 21:44:06,307 - INFO - Session State Snapshot:
-2025-05-31 21:44:06,307 - INFO - {
+2025-05-31 22:08:52,676 - INFO - Session State Snapshot:
+2025-05-31 22:08:52,676 - INFO - {
   "user_authenticated": 1,
   "user_name": "John Doe",
   "user_debit_card_digits": "1890",
@@ -562,21 +880,27 @@ Raw response:
   "user_street_name": "Oak St",
   "user_zip_code": "89530"
 }
-2025-05-31 21:44:06,307 - INFO - Event Stream:
-2025-05-31 21:44:06,307 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='pay my bill')] role='user'
-2025-05-31 21:44:06,308 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Alright, before we proceed with paying your bill, I need to authenticate you. After all, can't have any digital bandits running around, can we?\n"), Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-4f523b25-a45d-438d-a431-3cfb6f2bea98', args={'agent_name': 'authentication_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
-2025-05-31 21:44:06,308 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-4f523b25-a45d-438d-a431-3cfb6f2bea98', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
-2025-05-31 21:44:06,308 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay, I can help with that. To authenticate you, I need your last name and the last 4 digits of your debit card. Please provide them.\n')] role='model'
-2025-05-31 21:44:06,308 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='doe 1890')] role='user'
-2025-05-31 21:44:06,308 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-549bd9af-2ef4-4d48-ba92-2e9ba497d2b5', args={'last_digits': '1890', 'last_name': 'doe'}, name='authenticate_user'), function_response=None, inline_data=None, text=None)] role='model'
-2025-05-31 21:44:06,308 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-549bd9af-2ef4-4d48-ba92-2e9ba497d2b5', name='authenticate_user', response={'status': 'success', 'is_authenticated': 'True'}), inline_data=None, text=None)] role='user'
-2025-05-31 21:44:06,308 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Great! Authentication is complete.\n')] role='model'
-2025-05-31 21:44:06,308 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='well, pay my bill')] role='user'
-2025-05-31 21:44:06,308 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-8bed6540-7fed-4a03-b10a-69e050e30b06', args={'agent_name': 'bill_payment_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
-2025-05-31 21:44:06,308 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-8bed6540-7fed-4a03-b10a-69e050e30b06', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
-2025-05-31 21:44:06,308 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount between $100 and $1500?\n')] role='model'
-2025-05-31 21:44:22,777 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
-2025-05-31 21:44:22,778 - INFO - 
+2025-05-31 22:08:52,676 - INFO - Event Stream:
+2025-05-31 22:08:52,676 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='hello')] role='user'
+2025-05-31 22:08:52,676 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n")] role='model'
+2025-05-31 22:08:52,676 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="what's my balance")] role='user'
+2025-05-31 22:08:52,676 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"), Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-17cf77ae-501f-47f3-b385-4e974895ae85', args={'agent_name': 'authentication_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:08:52,676 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-17cf77ae-501f-47f3-b385-4e974895ae85', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:08:52,676 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n')] role='model'
+2025-05-31 22:08:52,676 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='doe, 1890')] role='user'
+2025-05-31 22:08:52,677 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-8cad2cca-c4df-4626-8f4c-9291432d24a0', args={'last_name': 'doe', 'last_digits': '1890'}, name='authenticate_user'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:08:52,677 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-8cad2cca-c4df-4626-8f4c-9291432d24a0', name='authenticate_user', response={'status': 'success', 'is_authenticated': 'True'}), inline_data=None, text=None)] role='user'
+2025-05-31 22:08:52,677 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Great! Authentication is complete.\n')] role='model'
+2025-05-31 22:08:52,677 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="well, what's my account balance")] role='user'
+2025-05-31 22:08:52,677 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-d698fb88-804f-4497-b2d7-e8deb95da887', args={'agent_name': 'account_info_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:08:52,677 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-d698fb88-804f-4497-b2d7-e8deb95da887', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:08:52,677 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Your account balance is $10000.\n')] role='model'
+2025-05-31 22:08:52,677 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='pay my credit card bill')] role='user'
+2025-05-31 22:08:52,677 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-5848ddab-19b8-4ba5-868e-1d1b6b3c2ffd', args={'agent_name': 'bill_payment_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:08:52,677 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-5848ddab-19b8-4ba5-868e-1d1b6b3c2ffd', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:08:52,678 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount? Please specify the amount you'd like to pay. It must be between $100 and $1500.\n")] role='model'
+2025-05-31 22:09:01,208 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
+2025-05-31 22:09:01,209 - INFO - 
 LLM Request:
 -----------------------------------------------------------
 System Instruction:
@@ -635,43 +959,49 @@ to your parent agent. If you don't have parent agent, try answer by yourself.
 
 -----------------------------------------------------------
 Contents:
-{"parts":[{"text":"pay my bill"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we proceed with paying your bill, I need to authenticate you. After all, can't have any digital bandits running around, can we?\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
+{"parts":[{"text":"hello"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n"}],"role":"user"}
+{"parts":[{"text":"what's my balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
 {"parts":[{"text":"For context:"},{"text":"[root_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Okay, I can help with that. To authenticate you, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"user"}
-{"parts":[{"text":"doe 1890"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `authenticate_user` with parameters: {'last_digits': '1890', 'last_name': 'doe'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"user"}
+{"parts":[{"text":"doe, 1890"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `authenticate_user` with parameters: {'last_name': 'doe', 'last_digits': '1890'}"}],"role":"user"}
 {"parts":[{"text":"For context:"},{"text":"[authentication_agent] `authenticate_user` tool returned result: {'status': 'success', 'is_authenticated': 'True'}"}],"role":"user"}
 {"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Great! Authentication is complete.\n"}],"role":"user"}
-{"parts":[{"text":"well, pay my bill"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'bill_payment_agent'}"}],"role":"user"}
+{"parts":[{"text":"well, what's my account balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'account_info_agent'}"}],"role":"user"}
 {"parts":[{"text":"For context:"},{"text":"[authentication_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
-{"parts":[{"text":"Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount between $100 and $1500?\n"}],"role":"model"}
-{"parts":[{"text":"pay full"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[account_info_agent] said: Your account balance is $10000.\n"}],"role":"user"}
+{"parts":[{"text":"pay my credit card bill"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[account_info_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'bill_payment_agent'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[account_info_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
+{"parts":[{"text":"Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount? Please specify the amount you'd like to pay. It must be between $100 and $1500.\n"}],"role":"model"}
+{"parts":[{"text":"pay the full"}],"role":"user"}
 -----------------------------------------------------------
 Functions:
 transfer_to_agent: {'agent_name': {'type': <Type.STRING: 'STRING'>}} -> None
 pay_credit_card_bill: {'amount_to_pay': {'type': <Type.INTEGER: 'INTEGER'>}} -> {'type': <Type.OBJECT: 'OBJECT'>}
 -----------------------------------------------------------
 
-2025-05-31 21:44:22,778 - INFO - AFC is enabled with max remote calls: 10.
-2025-05-31 21:44:23,995 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
-2025-05-31 21:44:23,998 - INFO - 
+2025-05-31 22:09:01,209 - INFO - AFC is enabled with max remote calls: 10.
+2025-05-31 22:09:02,549 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
+2025-05-31 22:09:02,551 - INFO - 
 LLM Response:
 -----------------------------------------------------------
 Text:
-Okay, you want to pay the full amount of $1500. Is that correct?
+Okay, so you want to pay the full amount of $1500. Is that correct?
 
 -----------------------------------------------------------
 Function calls:
 
 -----------------------------------------------------------
 Raw response:
-{"candidates":[{"content":{"parts":[{"text":"Okay, you want to pay the full amount of $1500. Is that correct?\n"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.03303388470695132}],"create_time":"2025-06-01T01:44:23.624338Z","response_id":"d7A7aNKNJo7dgLUPtoHTgQY","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":21,"candidates_tokens_details":[{"modality":"TEXT","token_count":21}],"prompt_token_count":932,"prompt_tokens_details":[{"modality":"TEXT","token_count":932}],"total_token_count":953,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
+{"candidates":[{"content":{"parts":[{"text":"Okay, so you want to pay the full amount of $1500. Is that correct?\n"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.010124857452782717}],"create_time":"2025-06-01T02:09:02.065730Z","response_id":"PrY7aMKBBPC-gLUPq9uj-Qg","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":22,"candidates_tokens_details":[{"modality":"TEXT","token_count":22}],"prompt_token_count":1086,"prompt_tokens_details":[{"modality":"TEXT","token_count":1086}],"total_token_count":1108,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
 -----------------------------------------------------------
 
-2025-05-31 21:44:24,000 - INFO - Session State Snapshot:
-2025-05-31 21:44:24,000 - INFO - {
+2025-05-31 22:09:02,554 - INFO - Session State Snapshot:
+2025-05-31 22:09:02,554 - INFO - {
   "user_authenticated": 1,
   "user_name": "John Doe",
   "user_debit_card_digits": "1890",
@@ -682,23 +1012,29 @@ Raw response:
   "user_street_name": "Oak St",
   "user_zip_code": "89530"
 }
-2025-05-31 21:44:24,000 - INFO - Event Stream:
-2025-05-31 21:44:24,000 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='pay my bill')] role='user'
-2025-05-31 21:44:24,001 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Alright, before we proceed with paying your bill, I need to authenticate you. After all, can't have any digital bandits running around, can we?\n"), Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-4f523b25-a45d-438d-a431-3cfb6f2bea98', args={'agent_name': 'authentication_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
-2025-05-31 21:44:24,001 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-4f523b25-a45d-438d-a431-3cfb6f2bea98', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
-2025-05-31 21:44:24,001 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay, I can help with that. To authenticate you, I need your last name and the last 4 digits of your debit card. Please provide them.\n')] role='model'
-2025-05-31 21:44:24,001 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='doe 1890')] role='user'
-2025-05-31 21:44:24,001 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-549bd9af-2ef4-4d48-ba92-2e9ba497d2b5', args={'last_digits': '1890', 'last_name': 'doe'}, name='authenticate_user'), function_response=None, inline_data=None, text=None)] role='model'
-2025-05-31 21:44:24,001 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-549bd9af-2ef4-4d48-ba92-2e9ba497d2b5', name='authenticate_user', response={'status': 'success', 'is_authenticated': 'True'}), inline_data=None, text=None)] role='user'
-2025-05-31 21:44:24,001 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Great! Authentication is complete.\n')] role='model'
-2025-05-31 21:44:24,001 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='well, pay my bill')] role='user'
-2025-05-31 21:44:24,001 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-8bed6540-7fed-4a03-b10a-69e050e30b06', args={'agent_name': 'bill_payment_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
-2025-05-31 21:44:24,002 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-8bed6540-7fed-4a03-b10a-69e050e30b06', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
-2025-05-31 21:44:24,002 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount between $100 and $1500?\n')] role='model'
-2025-05-31 21:44:24,002 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='pay full')] role='user'
-2025-05-31 21:44:24,002 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay, you want to pay the full amount of $1500. Is that correct?\n')] role='model'
-2025-05-31 21:44:27,288 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
-2025-05-31 21:44:27,288 - INFO - 
+2025-05-31 22:09:02,554 - INFO - Event Stream:
+2025-05-31 22:09:02,554 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='hello')] role='user'
+2025-05-31 22:09:02,554 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n")] role='model'
+2025-05-31 22:09:02,554 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="what's my balance")] role='user'
+2025-05-31 22:09:02,555 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"), Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-17cf77ae-501f-47f3-b385-4e974895ae85', args={'agent_name': 'authentication_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:02,555 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-17cf77ae-501f-47f3-b385-4e974895ae85', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:02,555 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n')] role='model'
+2025-05-31 22:09:02,555 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='doe, 1890')] role='user'
+2025-05-31 22:09:02,555 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-8cad2cca-c4df-4626-8f4c-9291432d24a0', args={'last_name': 'doe', 'last_digits': '1890'}, name='authenticate_user'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:02,555 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-8cad2cca-c4df-4626-8f4c-9291432d24a0', name='authenticate_user', response={'status': 'success', 'is_authenticated': 'True'}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:02,555 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Great! Authentication is complete.\n')] role='model'
+2025-05-31 22:09:02,556 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="well, what's my account balance")] role='user'
+2025-05-31 22:09:02,556 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-d698fb88-804f-4497-b2d7-e8deb95da887', args={'agent_name': 'account_info_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:02,556 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-d698fb88-804f-4497-b2d7-e8deb95da887', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:02,556 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Your account balance is $10000.\n')] role='model'
+2025-05-31 22:09:02,556 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='pay my credit card bill')] role='user'
+2025-05-31 22:09:02,556 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-5848ddab-19b8-4ba5-868e-1d1b6b3c2ffd', args={'agent_name': 'bill_payment_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:02,556 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-5848ddab-19b8-4ba5-868e-1d1b6b3c2ffd', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:02,556 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount? Please specify the amount you'd like to pay. It must be between $100 and $1500.\n")] role='model'
+2025-05-31 22:09:02,557 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='pay the full')] role='user'
+2025-05-31 22:09:02,557 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay, so you want to pay the full amount of $1500. Is that correct?\n')] role='model'
+2025-05-31 22:09:05,151 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
+2025-05-31 22:09:05,152 - INFO - 
 LLM Request:
 -----------------------------------------------------------
 System Instruction:
@@ -757,20 +1093,26 @@ to your parent agent. If you don't have parent agent, try answer by yourself.
 
 -----------------------------------------------------------
 Contents:
-{"parts":[{"text":"pay my bill"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we proceed with paying your bill, I need to authenticate you. After all, can't have any digital bandits running around, can we?\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
+{"parts":[{"text":"hello"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n"}],"role":"user"}
+{"parts":[{"text":"what's my balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
 {"parts":[{"text":"For context:"},{"text":"[root_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Okay, I can help with that. To authenticate you, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"user"}
-{"parts":[{"text":"doe 1890"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `authenticate_user` with parameters: {'last_digits': '1890', 'last_name': 'doe'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"user"}
+{"parts":[{"text":"doe, 1890"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `authenticate_user` with parameters: {'last_name': 'doe', 'last_digits': '1890'}"}],"role":"user"}
 {"parts":[{"text":"For context:"},{"text":"[authentication_agent] `authenticate_user` tool returned result: {'status': 'success', 'is_authenticated': 'True'}"}],"role":"user"}
 {"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Great! Authentication is complete.\n"}],"role":"user"}
-{"parts":[{"text":"well, pay my bill"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'bill_payment_agent'}"}],"role":"user"}
+{"parts":[{"text":"well, what's my account balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'account_info_agent'}"}],"role":"user"}
 {"parts":[{"text":"For context:"},{"text":"[authentication_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
-{"parts":[{"text":"Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount between $100 and $1500?\n"}],"role":"model"}
-{"parts":[{"text":"pay full"}],"role":"user"}
-{"parts":[{"text":"Okay, you want to pay the full amount of $1500. Is that correct?\n"}],"role":"model"}
+{"parts":[{"text":"For context:"},{"text":"[account_info_agent] said: Your account balance is $10000.\n"}],"role":"user"}
+{"parts":[{"text":"pay my credit card bill"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[account_info_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'bill_payment_agent'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[account_info_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
+{"parts":[{"text":"Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount? Please specify the amount you'd like to pay. It must be between $100 and $1500.\n"}],"role":"model"}
+{"parts":[{"text":"pay the full"}],"role":"user"}
+{"parts":[{"text":"Okay, so you want to pay the full amount of $1500. Is that correct?\n"}],"role":"model"}
 {"parts":[{"text":"yes"}],"role":"user"}
 -----------------------------------------------------------
 Functions:
@@ -778,10 +1120,10 @@ transfer_to_agent: {'agent_name': {'type': <Type.STRING: 'STRING'>}} -> None
 pay_credit_card_bill: {'amount_to_pay': {'type': <Type.INTEGER: 'INTEGER'>}} -> {'type': <Type.OBJECT: 'OBJECT'>}
 -----------------------------------------------------------
 
-2025-05-31 21:44:27,288 - INFO - AFC is enabled with max remote calls: 10.
-2025-05-31 21:44:28,577 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
-2025-05-31 21:44:28,579 - WARNING - Warning: there are non-text parts in the response: ['function_call'],returning concatenated text result from text parts,check out the non text parts for full response from model.
-2025-05-31 21:44:28,579 - INFO - 
+2025-05-31 22:09:05,153 - INFO - AFC is enabled with max remote calls: 10.
+2025-05-31 22:09:06,298 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
+2025-05-31 22:09:06,300 - WARNING - Warning: there are non-text parts in the response: ['function_call'],returning concatenated text result from text parts,check out the non text parts for full response from model.
+2025-05-31 22:09:06,300 - INFO - 
 LLM Response:
 -----------------------------------------------------------
 Text:
@@ -791,11 +1133,11 @@ Function calls:
 name: pay_credit_card_bill, args: {'amount_to_pay': 1500}
 -----------------------------------------------------------
 Raw response:
-{"candidates":[{"content":{"parts":[{"function_call":{"args":{"amount_to_pay":1500},"name":"pay_credit_card_bill"}}],"role":"model"},"finish_reason":"STOP","avg_logprobs":2.668651107412118e-6}],"create_time":"2025-06-01T01:44:28.113959Z","response_id":"fLA7aKf6BuGqgLUPkLaL-AE","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":13,"candidates_tokens_details":[{"modality":"TEXT","token_count":13}],"prompt_token_count":954,"prompt_tokens_details":[{"modality":"TEXT","token_count":954}],"total_token_count":967,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
+{"candidates":[{"content":{"parts":[{"function_call":{"args":{"amount_to_pay":1500},"name":"pay_credit_card_bill"}}],"role":"model"},"finish_reason":"STOP","avg_logprobs":9.66005385495149e-7}],"create_time":"2025-06-01T02:09:05.870606Z","response_id":"QbY7aM6RNfC-gLUPq9uj-Qg","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":13,"candidates_tokens_details":[{"modality":"TEXT","token_count":13}],"prompt_token_count":1109,"prompt_tokens_details":[{"modality":"TEXT","token_count":1109}],"total_token_count":1122,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
 -----------------------------------------------------------
 
-2025-05-31 21:44:28,610 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
-2025-05-31 21:44:28,610 - INFO - 
+2025-05-31 22:09:06,330 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
+2025-05-31 22:09:06,330 - INFO - 
 LLM Request:
 -----------------------------------------------------------
 System Instruction:
@@ -854,20 +1196,26 @@ to your parent agent. If you don't have parent agent, try answer by yourself.
 
 -----------------------------------------------------------
 Contents:
-{"parts":[{"text":"pay my bill"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we proceed with paying your bill, I need to authenticate you. After all, can't have any digital bandits running around, can we?\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
+{"parts":[{"text":"hello"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n"}],"role":"user"}
+{"parts":[{"text":"what's my balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
 {"parts":[{"text":"For context:"},{"text":"[root_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Okay, I can help with that. To authenticate you, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"user"}
-{"parts":[{"text":"doe 1890"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `authenticate_user` with parameters: {'last_digits': '1890', 'last_name': 'doe'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"user"}
+{"parts":[{"text":"doe, 1890"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `authenticate_user` with parameters: {'last_name': 'doe', 'last_digits': '1890'}"}],"role":"user"}
 {"parts":[{"text":"For context:"},{"text":"[authentication_agent] `authenticate_user` tool returned result: {'status': 'success', 'is_authenticated': 'True'}"}],"role":"user"}
 {"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Great! Authentication is complete.\n"}],"role":"user"}
-{"parts":[{"text":"well, pay my bill"}],"role":"user"}
-{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'bill_payment_agent'}"}],"role":"user"}
+{"parts":[{"text":"well, what's my account balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'account_info_agent'}"}],"role":"user"}
 {"parts":[{"text":"For context:"},{"text":"[authentication_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
-{"parts":[{"text":"Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount between $100 and $1500?\n"}],"role":"model"}
-{"parts":[{"text":"pay full"}],"role":"user"}
-{"parts":[{"text":"Okay, you want to pay the full amount of $1500. Is that correct?\n"}],"role":"model"}
+{"parts":[{"text":"For context:"},{"text":"[account_info_agent] said: Your account balance is $10000.\n"}],"role":"user"}
+{"parts":[{"text":"pay my credit card bill"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[account_info_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'bill_payment_agent'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[account_info_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
+{"parts":[{"text":"Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount? Please specify the amount you'd like to pay. It must be between $100 and $1500.\n"}],"role":"model"}
+{"parts":[{"text":"pay the full"}],"role":"user"}
+{"parts":[{"text":"Okay, so you want to pay the full amount of $1500. Is that correct?\n"}],"role":"model"}
 {"parts":[{"text":"yes"}],"role":"user"}
 {"parts":[{"function_call":{"args":{"amount_to_pay":1500},"name":"pay_credit_card_bill"}}],"role":"model"}
 {"parts":[{"function_response":{"name":"pay_credit_card_bill","response":{"status":"success","is_payment_completed":"True"}}}],"role":"user"}
@@ -877,24 +1225,24 @@ transfer_to_agent: {'agent_name': {'type': <Type.STRING: 'STRING'>}} -> None
 pay_credit_card_bill: {'amount_to_pay': {'type': <Type.INTEGER: 'INTEGER'>}} -> {'type': <Type.OBJECT: 'OBJECT'>}
 -----------------------------------------------------------
 
-2025-05-31 21:44:28,610 - INFO - AFC is enabled with max remote calls: 10.
-2025-05-31 21:44:29,621 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
-2025-05-31 21:44:29,624 - INFO - 
+2025-05-31 22:09:06,330 - INFO - AFC is enabled with max remote calls: 10.
+2025-05-31 22:09:07,773 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
+2025-05-31 22:09:07,776 - INFO - 
 LLM Response:
 -----------------------------------------------------------
 Text:
-Great. Your payment of $1500 has been processed and completed.
+Great! Your payment of $1500 has been successfully processed.
 
 -----------------------------------------------------------
 Function calls:
 
 -----------------------------------------------------------
 Raw response:
-{"candidates":[{"content":{"parts":[{"text":"Great. Your payment of $1500 has been processed and completed.\n"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.27333394218893614}],"create_time":"2025-06-01T01:44:29.294246Z","response_id":"fbA7aOb6EY7dgLUPtoHTgQY","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":17,"candidates_tokens_details":[{"modality":"TEXT","token_count":17}],"prompt_token_count":979,"prompt_tokens_details":[{"modality":"TEXT","token_count":979}],"total_token_count":996,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
+{"candidates":[{"content":{"parts":[{"text":"Great! Your payment of $1500 has been successfully processed.\n"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.05112551897764206}],"create_time":"2025-06-01T02:09:07.360866Z","response_id":"Q7Y7aKKDFryqnvgP7vyi0Qg","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":16,"candidates_tokens_details":[{"modality":"TEXT","token_count":16}],"prompt_token_count":1134,"prompt_tokens_details":[{"modality":"TEXT","token_count":1134}],"total_token_count":1150,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
 -----------------------------------------------------------
 
-2025-05-31 21:44:29,626 - INFO - Session State Snapshot:
-2025-05-31 21:44:29,630 - INFO - {
+2025-05-31 22:09:07,781 - INFO - Session State Snapshot:
+2025-05-31 22:09:07,782 - INFO - {
   "user_authenticated": 1,
   "user_name": "John Doe",
   "user_debit_card_digits": "1890",
@@ -905,22 +1253,419 @@ Raw response:
   "user_street_name": "Oak St",
   "user_zip_code": "89530"
 }
-2025-05-31 21:44:29,631 - INFO - Event Stream:
-2025-05-31 21:44:29,631 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='pay my bill')] role='user'
-2025-05-31 21:44:29,631 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Alright, before we proceed with paying your bill, I need to authenticate you. After all, can't have any digital bandits running around, can we?\n"), Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-4f523b25-a45d-438d-a431-3cfb6f2bea98', args={'agent_name': 'authentication_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
-2025-05-31 21:44:29,631 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-4f523b25-a45d-438d-a431-3cfb6f2bea98', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
-2025-05-31 21:44:29,631 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay, I can help with that. To authenticate you, I need your last name and the last 4 digits of your debit card. Please provide them.\n')] role='model'
-2025-05-31 21:44:29,632 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='doe 1890')] role='user'
-2025-05-31 21:44:29,632 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-549bd9af-2ef4-4d48-ba92-2e9ba497d2b5', args={'last_digits': '1890', 'last_name': 'doe'}, name='authenticate_user'), function_response=None, inline_data=None, text=None)] role='model'
-2025-05-31 21:44:29,632 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-549bd9af-2ef4-4d48-ba92-2e9ba497d2b5', name='authenticate_user', response={'status': 'success', 'is_authenticated': 'True'}), inline_data=None, text=None)] role='user'
-2025-05-31 21:44:29,632 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Great! Authentication is complete.\n')] role='model'
-2025-05-31 21:44:29,632 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='well, pay my bill')] role='user'
-2025-05-31 21:44:29,632 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-8bed6540-7fed-4a03-b10a-69e050e30b06', args={'agent_name': 'bill_payment_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
-2025-05-31 21:44:29,632 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-8bed6540-7fed-4a03-b10a-69e050e30b06', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
-2025-05-31 21:44:29,632 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount between $100 and $1500?\n')] role='model'
-2025-05-31 21:44:29,632 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='pay full')] role='user'
-2025-05-31 21:44:29,632 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay, you want to pay the full amount of $1500. Is that correct?\n')] role='model'
-2025-05-31 21:44:29,632 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='yes')] role='user'
-2025-05-31 21:44:29,632 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-bd106593-fcd6-44e1-8cd4-74e001e2db24', args={'amount_to_pay': 1500}, name='pay_credit_card_bill'), function_response=None, inline_data=None, text=None)] role='model'
-2025-05-31 21:44:29,633 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-bd106593-fcd6-44e1-8cd4-74e001e2db24', name='pay_credit_card_bill', response={'status': 'success', 'is_payment_completed': 'True'}), inline_data=None, text=None)] role='user'
-2025-05-31 21:44:29,633 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Great. Your payment of $1500 has been processed and completed.\n')] role='model'
+2025-05-31 22:09:07,782 - INFO - Event Stream:
+2025-05-31 22:09:07,782 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='hello')] role='user'
+2025-05-31 22:09:07,782 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n")] role='model'
+2025-05-31 22:09:07,782 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="what's my balance")] role='user'
+2025-05-31 22:09:07,782 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"), Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-17cf77ae-501f-47f3-b385-4e974895ae85', args={'agent_name': 'authentication_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:07,782 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-17cf77ae-501f-47f3-b385-4e974895ae85', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:07,782 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n')] role='model'
+2025-05-31 22:09:07,783 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='doe, 1890')] role='user'
+2025-05-31 22:09:07,783 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-8cad2cca-c4df-4626-8f4c-9291432d24a0', args={'last_name': 'doe', 'last_digits': '1890'}, name='authenticate_user'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:07,783 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-8cad2cca-c4df-4626-8f4c-9291432d24a0', name='authenticate_user', response={'status': 'success', 'is_authenticated': 'True'}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:07,783 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Great! Authentication is complete.\n')] role='model'
+2025-05-31 22:09:07,783 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="well, what's my account balance")] role='user'
+2025-05-31 22:09:07,783 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-d698fb88-804f-4497-b2d7-e8deb95da887', args={'agent_name': 'account_info_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:07,783 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-d698fb88-804f-4497-b2d7-e8deb95da887', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:07,783 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Your account balance is $10000.\n')] role='model'
+2025-05-31 22:09:07,783 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='pay my credit card bill')] role='user'
+2025-05-31 22:09:07,783 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-5848ddab-19b8-4ba5-868e-1d1b6b3c2ffd', args={'agent_name': 'bill_payment_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:07,784 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-5848ddab-19b8-4ba5-868e-1d1b6b3c2ffd', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:07,784 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount? Please specify the amount you'd like to pay. It must be between $100 and $1500.\n")] role='model'
+2025-05-31 22:09:07,784 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='pay the full')] role='user'
+2025-05-31 22:09:07,784 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay, so you want to pay the full amount of $1500. Is that correct?\n')] role='model'
+2025-05-31 22:09:07,784 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='yes')] role='user'
+2025-05-31 22:09:07,784 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-149f422c-b845-4a7b-9674-28653966bba4', args={'amount_to_pay': 1500}, name='pay_credit_card_bill'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:07,784 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-149f422c-b845-4a7b-9674-28653966bba4', name='pay_credit_card_bill', response={'status': 'success', 'is_payment_completed': 'True'}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:07,784 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Great! Your payment of $1500 has been successfully processed.\n')] role='model'
+2025-05-31 22:09:14,458 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
+2025-05-31 22:09:14,458 - INFO - 
+LLM Request:
+-----------------------------------------------------------
+System Instruction:
+
+# CONTEXT
+You are the credit card bill payment agent. You should ALWAYS ask the user whether they would like to make the full payment due or the minimum amount or any value between the minimum amount and full bill amount.
+full credit card bill (in dollars) : 0
+minimum amount to be paid (in dollars) : 100
+
+## GUIDELINES:
+*The amount that the user wants to pay should be between 'minimum amount to be paid' and 'full credit card bill'.If the user provides any amount outside of the range,DO NOT proceed with bill payment. Inform the user accordingly.
+* Ask and confirm the amount before proceeding.
+*If the user's payment amount due is 0,DO NOT proceed with bill payment. Inform the user accordingly.
+
+
+# OUTPUT INSTRUCTION
+*For making payment: When you are able to get the bill payment amount confirmed from the user, 
+call the relevant tool to pay the credit card bill with the confirmed bill payment amount.
+
+
+You are an agent. Your internal name is "bill_payment_agent".
+
+ The description about you is "Pays the credit card bill for the user"
+
+
+You have a list of other agents to transfer to:
+
+
+Agent name: root_agent
+Agent description: Primary agent that talks to the user and orchestrates tasks
+
+
+Agent name: authentication_agent
+Agent description: Authenticates a user
+
+
+Agent name: account_info_agent
+Agent description: Provides information about account and credit card bill and billing address
+
+
+Agent name: address_update_agent
+Agent description: Updates the billing address for the user
+
+
+If you are the best to answer the question according to your description, you
+can answer it.
+
+If another agent is better for answering the question according to its
+description, call `transfer_to_agent` function to transfer the
+question to that agent. When transferring, do not generate any text other than
+the function call.
+
+Your parent agent is root_agent. If neither the other agents nor
+you are best for answering the question according to the descriptions, transfer
+to your parent agent. If you don't have parent agent, try answer by yourself.
+
+-----------------------------------------------------------
+Contents:
+{"parts":[{"text":"hello"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n"}],"role":"user"}
+{"parts":[{"text":"what's my balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"user"}
+{"parts":[{"text":"doe, 1890"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `authenticate_user` with parameters: {'last_name': 'doe', 'last_digits': '1890'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] `authenticate_user` tool returned result: {'status': 'success', 'is_authenticated': 'True'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Great! Authentication is complete.\n"}],"role":"user"}
+{"parts":[{"text":"well, what's my account balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'account_info_agent'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[account_info_agent] said: Your account balance is $10000.\n"}],"role":"user"}
+{"parts":[{"text":"pay my credit card bill"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[account_info_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'bill_payment_agent'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[account_info_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
+{"parts":[{"text":"Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount? Please specify the amount you'd like to pay. It must be between $100 and $1500.\n"}],"role":"model"}
+{"parts":[{"text":"pay the full"}],"role":"user"}
+{"parts":[{"text":"Okay, so you want to pay the full amount of $1500. Is that correct?\n"}],"role":"model"}
+{"parts":[{"text":"yes"}],"role":"user"}
+{"parts":[{"function_call":{"args":{"amount_to_pay":1500},"name":"pay_credit_card_bill"}}],"role":"model"}
+{"parts":[{"function_response":{"name":"pay_credit_card_bill","response":{"status":"success","is_payment_completed":"True"}}}],"role":"user"}
+{"parts":[{"text":"Great! Your payment of $1500 has been successfully processed.\n"}],"role":"model"}
+{"parts":[{"text":"what's my balance now"}],"role":"user"}
+-----------------------------------------------------------
+Functions:
+transfer_to_agent: {'agent_name': {'type': <Type.STRING: 'STRING'>}} -> None
+pay_credit_card_bill: {'amount_to_pay': {'type': <Type.INTEGER: 'INTEGER'>}} -> {'type': <Type.OBJECT: 'OBJECT'>}
+-----------------------------------------------------------
+
+2025-05-31 22:09:14,458 - INFO - AFC is enabled with max remote calls: 10.
+2025-05-31 22:09:16,370 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
+2025-05-31 22:09:16,373 - WARNING - Warning: there are non-text parts in the response: ['function_call'],returning concatenated text result from text parts,check out the non text parts for full response from model.
+2025-05-31 22:09:16,373 - INFO - 
+LLM Response:
+-----------------------------------------------------------
+Text:
+None
+-----------------------------------------------------------
+Function calls:
+name: transfer_to_agent, args: {'agent_name': 'account_info_agent'}
+-----------------------------------------------------------
+Raw response:
+{"candidates":[{"content":{"parts":[{"function_call":{"args":{"agent_name":"account_info_agent"},"name":"transfer_to_agent"}}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.00013445410877466202}],"create_time":"2025-06-01T02:09:15.693809Z","response_id":"S7Y7aLGsKsXWnvgP3LDNsAw","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":13,"candidates_tokens_details":[{"modality":"TEXT","token_count":13}],"prompt_token_count":1156,"prompt_tokens_details":[{"modality":"TEXT","token_count":1156}],"total_token_count":1169,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
+-----------------------------------------------------------
+
+2025-05-31 22:09:16,392 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
+2025-05-31 22:09:16,392 - INFO - 
+LLM Request:
+-----------------------------------------------------------
+System Instruction:
+
+# CONTEXT
+Following are account and credit card bill payment and address related information for the user from the Database. Answer any query that the user might have from this information
+user account balance (in dollars) : 8500
+user credit card bill (in dollars) : 0
+user billing address: 42, Oak St, 89530
+
+
+You are an agent. Your internal name is "account_info_agent".
+
+ The description about you is "Provides information about account and credit card bill and billing address"
+
+
+You have a list of other agents to transfer to:
+
+
+Agent name: root_agent
+Agent description: Primary agent that talks to the user and orchestrates tasks
+
+
+Agent name: authentication_agent
+Agent description: Authenticates a user
+
+
+Agent name: bill_payment_agent
+Agent description: Pays the credit card bill for the user
+
+
+Agent name: address_update_agent
+Agent description: Updates the billing address for the user
+
+
+If you are the best to answer the question according to your description, you
+can answer it.
+
+If another agent is better for answering the question according to its
+description, call `transfer_to_agent` function to transfer the
+question to that agent. When transferring, do not generate any text other than
+the function call.
+
+Your parent agent is root_agent. If neither the other agents nor
+you are best for answering the question according to the descriptions, transfer
+to your parent agent. If you don't have parent agent, try answer by yourself.
+
+-----------------------------------------------------------
+Contents:
+{"parts":[{"text":"hello"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n"}],"role":"user"}
+{"parts":[{"text":"what's my balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"user"}
+{"parts":[{"text":"doe, 1890"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `authenticate_user` with parameters: {'last_name': 'doe', 'last_digits': '1890'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] `authenticate_user` tool returned result: {'status': 'success', 'is_authenticated': 'True'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Great! Authentication is complete.\n"}],"role":"user"}
+{"parts":[{"text":"well, what's my account balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'account_info_agent'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
+{"parts":[{"text":"Your account balance is $10000.\n"}],"role":"model"}
+{"parts":[{"text":"pay my credit card bill"}],"role":"user"}
+{"parts":[{"function_call":{"args":{"agent_name":"bill_payment_agent"},"name":"transfer_to_agent"}}],"role":"model"}
+{"parts":[{"function_response":{"name":"transfer_to_agent","response":{}}}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[bill_payment_agent] said: Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount? Please specify the amount you'd like to pay. It must be between $100 and $1500.\n"}],"role":"user"}
+{"parts":[{"text":"pay the full"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[bill_payment_agent] said: Okay, so you want to pay the full amount of $1500. Is that correct?\n"}],"role":"user"}
+{"parts":[{"text":"yes"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[bill_payment_agent] called tool `pay_credit_card_bill` with parameters: {'amount_to_pay': 1500}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[bill_payment_agent] `pay_credit_card_bill` tool returned result: {'status': 'success', 'is_payment_completed': 'True'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[bill_payment_agent] said: Great! Your payment of $1500 has been successfully processed.\n"}],"role":"user"}
+{"parts":[{"text":"what's my balance now"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[bill_payment_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'account_info_agent'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[bill_payment_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
+-----------------------------------------------------------
+Functions:
+transfer_to_agent: {'agent_name': {'type': <Type.STRING: 'STRING'>}} -> None
+-----------------------------------------------------------
+
+2025-05-31 22:09:16,392 - INFO - AFC is enabled with max remote calls: 10.
+2025-05-31 22:09:17,599 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
+2025-05-31 22:09:17,601 - INFO - 
+LLM Response:
+-----------------------------------------------------------
+Text:
+Your account balance is now $8500.
+
+-----------------------------------------------------------
+Function calls:
+
+-----------------------------------------------------------
+Raw response:
+{"candidates":[{"content":{"parts":[{"text":"Your account balance is now $8500.\n"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.10309114058812459}],"create_time":"2025-06-01T02:09:17.085100Z","response_id":"TbY7aOyYBeSpnvgPu7fSiQY","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":12,"candidates_tokens_details":[{"modality":"TEXT","token_count":12}],"prompt_token_count":997,"prompt_tokens_details":[{"modality":"TEXT","token_count":997}],"total_token_count":1009,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
+-----------------------------------------------------------
+
+2025-05-31 22:09:17,604 - INFO - Session State Snapshot:
+2025-05-31 22:09:17,604 - INFO - {
+  "user_authenticated": 1,
+  "user_name": "John Doe",
+  "user_debit_card_digits": "1890",
+  "user_account_balance": 8500,
+  "user_credit_card_bill": 0,
+  "user_credit_card_bill_min_pay": 100,
+  "user_house_number": 42,
+  "user_street_name": "Oak St",
+  "user_zip_code": "89530"
+}
+2025-05-31 22:09:17,604 - INFO - Event Stream:
+2025-05-31 22:09:17,604 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='hello')] role='user'
+2025-05-31 22:09:17,604 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n")] role='model'
+2025-05-31 22:09:17,604 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="what's my balance")] role='user'
+2025-05-31 22:09:17,604 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"), Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-17cf77ae-501f-47f3-b385-4e974895ae85', args={'agent_name': 'authentication_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:17,604 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-17cf77ae-501f-47f3-b385-4e974895ae85', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:17,605 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n')] role='model'
+2025-05-31 22:09:17,605 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='doe, 1890')] role='user'
+2025-05-31 22:09:17,605 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-8cad2cca-c4df-4626-8f4c-9291432d24a0', args={'last_name': 'doe', 'last_digits': '1890'}, name='authenticate_user'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:17,605 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-8cad2cca-c4df-4626-8f4c-9291432d24a0', name='authenticate_user', response={'status': 'success', 'is_authenticated': 'True'}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:17,605 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Great! Authentication is complete.\n')] role='model'
+2025-05-31 22:09:17,605 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="well, what's my account balance")] role='user'
+2025-05-31 22:09:17,605 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-d698fb88-804f-4497-b2d7-e8deb95da887', args={'agent_name': 'account_info_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:17,605 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-d698fb88-804f-4497-b2d7-e8deb95da887', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:17,605 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Your account balance is $10000.\n')] role='model'
+2025-05-31 22:09:17,605 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='pay my credit card bill')] role='user'
+2025-05-31 22:09:17,606 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-5848ddab-19b8-4ba5-868e-1d1b6b3c2ffd', args={'agent_name': 'bill_payment_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:17,606 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-5848ddab-19b8-4ba5-868e-1d1b6b3c2ffd', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:17,606 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount? Please specify the amount you'd like to pay. It must be between $100 and $1500.\n")] role='model'
+2025-05-31 22:09:17,606 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='pay the full')] role='user'
+2025-05-31 22:09:17,606 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay, so you want to pay the full amount of $1500. Is that correct?\n')] role='model'
+2025-05-31 22:09:17,606 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='yes')] role='user'
+2025-05-31 22:09:17,606 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-149f422c-b845-4a7b-9674-28653966bba4', args={'amount_to_pay': 1500}, name='pay_credit_card_bill'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:17,606 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-149f422c-b845-4a7b-9674-28653966bba4', name='pay_credit_card_bill', response={'status': 'success', 'is_payment_completed': 'True'}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:17,606 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Great! Your payment of $1500 has been successfully processed.\n')] role='model'
+2025-05-31 22:09:17,606 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="what's my balance now")] role='user'
+2025-05-31 22:09:17,606 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-6cde478f-f722-4005-815a-8afee021b0cd', args={'agent_name': 'account_info_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:17,606 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-6cde478f-f722-4005-815a-8afee021b0cd', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:17,606 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Your account balance is now $8500.\n')] role='model'
+2025-05-31 22:09:26,354 - INFO - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
+2025-05-31 22:09:26,354 - INFO - 
+LLM Request:
+-----------------------------------------------------------
+System Instruction:
+
+# CONTEXT
+Following are account and credit card bill payment and address related information for the user from the Database. Answer any query that the user might have from this information
+user account balance (in dollars) : 8500
+user credit card bill (in dollars) : 0
+user billing address: 42, Oak St, 89530
+
+
+You are an agent. Your internal name is "account_info_agent".
+
+ The description about you is "Provides information about account and credit card bill and billing address"
+
+
+You have a list of other agents to transfer to:
+
+
+Agent name: root_agent
+Agent description: Primary agent that talks to the user and orchestrates tasks
+
+
+Agent name: authentication_agent
+Agent description: Authenticates a user
+
+
+Agent name: bill_payment_agent
+Agent description: Pays the credit card bill for the user
+
+
+Agent name: address_update_agent
+Agent description: Updates the billing address for the user
+
+
+If you are the best to answer the question according to your description, you
+can answer it.
+
+If another agent is better for answering the question according to its
+description, call `transfer_to_agent` function to transfer the
+question to that agent. When transferring, do not generate any text other than
+the function call.
+
+Your parent agent is root_agent. If neither the other agents nor
+you are best for answering the question according to the descriptions, transfer
+to your parent agent. If you don't have parent agent, try answer by yourself.
+
+-----------------------------------------------------------
+Contents:
+{"parts":[{"text":"hello"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n"}],"role":"user"}
+{"parts":[{"text":"what's my balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] said: Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"},{"text":"[root_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'authentication_agent'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[root_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n"}],"role":"user"}
+{"parts":[{"text":"doe, 1890"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `authenticate_user` with parameters: {'last_name': 'doe', 'last_digits': '1890'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] `authenticate_user` tool returned result: {'status': 'success', 'is_authenticated': 'True'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] said: Great! Authentication is complete.\n"}],"role":"user"}
+{"parts":[{"text":"well, what's my account balance"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'account_info_agent'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[authentication_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
+{"parts":[{"text":"Your account balance is $10000.\n"}],"role":"model"}
+{"parts":[{"text":"pay my credit card bill"}],"role":"user"}
+{"parts":[{"function_call":{"args":{"agent_name":"bill_payment_agent"},"name":"transfer_to_agent"}}],"role":"model"}
+{"parts":[{"function_response":{"name":"transfer_to_agent","response":{}}}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[bill_payment_agent] said: Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount? Please specify the amount you'd like to pay. It must be between $100 and $1500.\n"}],"role":"user"}
+{"parts":[{"text":"pay the full"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[bill_payment_agent] said: Okay, so you want to pay the full amount of $1500. Is that correct?\n"}],"role":"user"}
+{"parts":[{"text":"yes"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[bill_payment_agent] called tool `pay_credit_card_bill` with parameters: {'amount_to_pay': 1500}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[bill_payment_agent] `pay_credit_card_bill` tool returned result: {'status': 'success', 'is_payment_completed': 'True'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[bill_payment_agent] said: Great! Your payment of $1500 has been successfully processed.\n"}],"role":"user"}
+{"parts":[{"text":"what's my balance now"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[bill_payment_agent] called tool `transfer_to_agent` with parameters: {'agent_name': 'account_info_agent'}"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[bill_payment_agent] `transfer_to_agent` tool returned result: {}"}],"role":"user"}
+{"parts":[{"text":"Your account balance is now $8500.\n"}],"role":"model"}
+{"parts":[{"text":"okay, thanks"}],"role":"user"}
+-----------------------------------------------------------
+Functions:
+transfer_to_agent: {'agent_name': {'type': <Type.STRING: 'STRING'>}} -> None
+-----------------------------------------------------------
+
+2025-05-31 22:09:26,354 - INFO - AFC is enabled with max remote calls: 10.
+2025-05-31 22:09:27,735 - INFO - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/linen-flash-457820-q4/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
+2025-05-31 22:09:27,738 - INFO - 
+LLM Response:
+-----------------------------------------------------------
+Text:
+You're welcome! Is there anything else I can help you with today?
+
+-----------------------------------------------------------
+Function calls:
+
+-----------------------------------------------------------
+Raw response:
+{"candidates":[{"content":{"parts":[{"text":"You're welcome! Is there anything else I can help you with today?\n"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.0020988585756105535}],"create_time":"2025-06-01T02:09:27.154788Z","response_id":"V7Y7aKS5CdO8nvgPkuvc0QY","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":17,"candidates_tokens_details":[{"modality":"TEXT","token_count":17}],"prompt_token_count":1012,"prompt_tokens_details":[{"modality":"TEXT","token_count":1012}],"total_token_count":1029,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
+-----------------------------------------------------------
+
+2025-05-31 22:09:27,742 - INFO - Session State Snapshot:
+2025-05-31 22:09:27,742 - INFO - {
+  "user_authenticated": 1,
+  "user_name": "John Doe",
+  "user_debit_card_digits": "1890",
+  "user_account_balance": 8500,
+  "user_credit_card_bill": 0,
+  "user_credit_card_bill_min_pay": 100,
+  "user_house_number": 42,
+  "user_street_name": "Oak St",
+  "user_zip_code": "89530"
+}
+2025-05-31 22:09:27,742 - INFO - Event Stream:
+2025-05-31 22:09:27,742 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='hello')] role='user'
+2025-05-31 22:09:27,742 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Hey there! Chad here, ready to roll. I can help you with a few things today: checking your account balance, paying your credit card bill, or updating your billing address. What's on the agenda?\n")] role='model'
+2025-05-31 22:09:27,742 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="what's my balance")] role='user'
+2025-05-31 22:09:27,743 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Alright, before we dive into your account balance, I need to make sure it's really you asking. Let's get you authenticated first!\n"), Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-17cf77ae-501f-47f3-b385-4e974895ae85', args={'agent_name': 'authentication_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:27,743 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-17cf77ae-501f-47f3-b385-4e974895ae85', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:27,743 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay! To authenticate, I need your last name and the last 4 digits of your debit card. Please provide them.\n')] role='model'
+2025-05-31 22:09:27,743 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='doe, 1890')] role='user'
+2025-05-31 22:09:27,743 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-8cad2cca-c4df-4626-8f4c-9291432d24a0', args={'last_name': 'doe', 'last_digits': '1890'}, name='authenticate_user'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:27,743 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-8cad2cca-c4df-4626-8f4c-9291432d24a0', name='authenticate_user', response={'status': 'success', 'is_authenticated': 'True'}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:27,743 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Great! Authentication is complete.\n')] role='model'
+2025-05-31 22:09:27,743 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="well, what's my account balance")] role='user'
+2025-05-31 22:09:27,743 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-d698fb88-804f-4497-b2d7-e8deb95da887', args={'agent_name': 'account_info_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:27,743 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-d698fb88-804f-4497-b2d7-e8deb95da887', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:27,743 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Your account balance is $10000.\n')] role='model'
+2025-05-31 22:09:27,744 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='pay my credit card bill')] role='user'
+2025-05-31 22:09:27,744 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-5848ddab-19b8-4ba5-868e-1d1b6b3c2ffd', args={'agent_name': 'bill_payment_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:27,744 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-5848ddab-19b8-4ba5-868e-1d1b6b3c2ffd', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:27,744 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="Okay, I can help you with that. Would you like to make the full payment of $1500, the minimum payment of $100, or a different amount? Please specify the amount you'd like to pay. It must be between $100 and $1500.\n")] role='model'
+2025-05-31 22:09:27,744 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='pay the full')] role='user'
+2025-05-31 22:09:27,744 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Okay, so you want to pay the full amount of $1500. Is that correct?\n')] role='model'
+2025-05-31 22:09:27,744 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='yes')] role='user'
+2025-05-31 22:09:27,744 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-149f422c-b845-4a7b-9674-28653966bba4', args={'amount_to_pay': 1500}, name='pay_credit_card_bill'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:27,744 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-149f422c-b845-4a7b-9674-28653966bba4', name='pay_credit_card_bill', response={'status': 'success', 'is_payment_completed': 'True'}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:27,744 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Great! Your payment of $1500 has been successfully processed.\n')] role='model'
+2025-05-31 22:09:27,744 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="what's my balance now")] role='user'
+2025-05-31 22:09:27,744 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=FunctionCall(id='adk-6cde478f-f722-4005-815a-8afee021b0cd', args={'agent_name': 'account_info_agent'}, name='transfer_to_agent'), function_response=None, inline_data=None, text=None)] role='model'
+2025-05-31 22:09:27,744 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=FunctionResponse(id='adk-6cde478f-f722-4005-815a-8afee021b0cd', name='transfer_to_agent', response={}), inline_data=None, text=None)] role='user'
+2025-05-31 22:09:27,745 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='Your account balance is now $8500.\n')] role='model'
+2025-05-31 22:09:27,745 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text='okay, thanks')] role='user'
+2025-05-31 22:09:27,745 - INFO - parts=[Part(video_metadata=None, thought=None, code_execution_result=None, executable_code=None, file_data=None, function_call=None, function_response=None, inline_data=None, text="You're welcome! Is there anything else I can help you with today?\n")] role='model'
