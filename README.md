@@ -1,6 +1,6 @@
 # Graph based agentic workflow 
 
-Google Agent Development Kit based Customer Cupport Bot Template
+Google Agent Development Kit based Customer Support Bot Template
 
 ## Installation
 
@@ -12,6 +12,7 @@ pip install -r requirements.txt
 
 Test on terminal
 ```bash
+cd src
 python main.py
 ```
 
