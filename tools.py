@@ -17,12 +17,12 @@ def authenticate_user(last_name: str,last_digits: str, tool_context: ToolContext
               If 'error', includes an 'error_message' key.
     """
     try:
-        last_name_normalized = last_name
+        last_name_normalized = last_name.lower()
         last_name_from_db =  tool_context.state["user_name"].split()[-1]
         # print(last_name_from_db)
         last_digits_from_db = tool_context.state["user_debit_card_digits"]
         # print(last_digits_from_db)
-        is_name_match = last_name_normalized == last_name_from_db
+        is_name_match = last_name_normalized == last_name_from_db.lower()
         is_number_match = last_digits == last_digits_from_db
         if is_name_match and is_number_match:
             tool_context.state["user_authenticated"]=1

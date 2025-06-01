@@ -14,17 +14,16 @@ from config import *
 from agents import *
 
 import warnings
-# Ignore all warnings
-warnings.filterwarnings("ignore")
+warnings.filterwarnings("ignore") # Ignores all warnings
 
-# import logging
-# logging.basicConfig(level=logging.ERROR)
+import logging
+logging.basicConfig(
+    filename='app.log',  # Specify the log file name
+    level=logging.INFO,  # Set the minimum logging level to INFO (or DEBUG, WARNING, ERROR, CRITICAL)
+    format='%(asctime)s - %(levelname)s - %(message)s',  # Define the log message format
+    filemode='w'
+)
 
-# # --- Configure Logging ---
-# logging.basicConfig(level=logging.INFO)
-# logger = logging.getLogger(__name__)
-
-# print("Libraries imported.")
 
 os.environ["GOOGLE_CLOUD_PROJECT"] = google_project_id
 os.environ["GOOGLE_CLOUD_LOCATION"] = google_project_region
@@ -91,12 +90,12 @@ async def call_agent(
     final_session = session_service.get_session(app_name=APP_NAME, 
                                                 user_id=USER_ID, 
                                                 session_id=SESSION_ID)
-    # print("Current Session State:")
-    # print(json.dumps(final_session.state, indent=2))
+    logging.info("Session State Snapshot:")
+    logging.info(json.dumps(final_session.state, indent=2))
     # print("-------------------------------\n")
-    # print("All events in current session:")
-    # for event in final_session.events:
-    #     print(event.content)
+    logging.info("Event Stream:")
+    for event in final_session.events:
+        logging.info(event.content)
     #     print("------\n")
     # print("-------------------------------\n")
     return final_response_text
