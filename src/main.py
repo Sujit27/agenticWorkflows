@@ -40,7 +40,7 @@ session = session_service.create_session(app_name=APP_NAME, user_id=USER_ID,\
 
 # Create a runner 
 runner = Runner(
-    agent=root_agent,
+    agent=orchestrator_agent,
     app_name=APP_NAME,
     session_service=session_service
 )
@@ -52,20 +52,21 @@ async def call_agent(
     """Sends a user input to the agent and provide output."""
 
     content = types.Content(role='user', parts=[types.Part(text=user_input)])
-
+    output_response = ""
     async for event in runner.run_async(user_id=USER_ID, session_id=SESSION_ID, new_message=content):
         # You can uncomment the line below to see *all* events during execution
         # print(f"  [Event] Author: {event.author}, Type: {type(event).__name__}, Final: {event.is_final_response()}, Content: {event.content}")
 
-        # Key Concept: is_final_response() marks the concluding message for the turn.
-        if event.is_final_response():
-            if event.content and event.content.parts:
-                # Assuming text response in the first part
-                final_response_text = event.content.parts[0].text
-            elif event.actions and event.actions.escalate: # Handle potential errors/escalations
-                final_response_text = f"Agent escalated: {event.error_message or 'No specific message.'}"
-            # Add more checks here if needed (e.g., specific error codes)
-            break # Stop processing events once the final response is found
+        # if event.is_final_response():
+        #     if event.content and event.content.parts:
+        #         # Assuming text response in the first part
+        #         final_response_text = event.content.parts[0].text
+        #     elif event.actions and event.actions.escalate: # Handle potential errors/escalations
+        #         final_response_text = f"Agent escalated: {event.error_message or 'No specific message.'}"
+        #     # Add more checks here if needed (e.g., specific error codes)
+        #     break # Stop processing events once the final response is found
+        if event.content.parts[0].text:
+            output_response += event.content.parts[0].text
 
     final_session = session_service.get_session(app_name=APP_NAME, 
                                                 user_id=USER_ID, 
@@ -75,7 +76,7 @@ async def call_agent(
     logging.info("Event Stream:")
     for event in final_session.events:
         logging.info(event.content)
-    return final_response_text
+    return output_response.replace("\n","")
 
 
 #Run Interactions ---

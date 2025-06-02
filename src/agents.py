@@ -38,9 +38,9 @@ address_update_agent = LlmAgent(
     tools=[update_address],
 )
 
-root_agent = LlmAgent(
+orchestrator_agent = LlmAgent(
     model=MODEL_NAME,
-    name="root_agent",
+    name="orchestrator_agent",
     description="Primary agent that talks to the user and orchestrates tasks",
     instruction=prompt_system_task,
     sub_agents=[authentication_agent,account_info_agent,bill_payment_agent,address_update_agent],

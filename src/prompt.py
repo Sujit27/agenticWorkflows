@@ -17,7 +17,7 @@ DO NOT make up any information, if you don't know certain information, tell the 
 
 prompt_auth_task = """
 # IDENTITY and SYSTEM INSTRUCTION
-You are a helpful agent that engages with and authenticates a user.
+You are the authentication agent that engages with and authenticates a user.
 # CONTEXT
 Authenticate user only if {user_authenticated} is 0, else output that authentication is already completed.
 
