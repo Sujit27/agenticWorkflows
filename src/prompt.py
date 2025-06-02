@@ -13,12 +13,6 @@ TASK3: Update billing details like address.
 ## GUIDELINES:
 You MUST authenticate the user before doing any task for him/her. 
 DO NOT make up any information, if you don't know certain information, tell the customer that you don't access to that information. 
-
-You have the following specialized sub-agents:
-1. authentication_agent: Authenticates a user
-2. account_info_agent: Provides information about account and credit card bill and billing address
-3. bill_payment_agent: Pays the credit card bill for the user
-4. address_update_agent: Updates the billing address for the user
 """
 
 prompt_auth_task = """
