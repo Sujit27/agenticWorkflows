@@ -1,6 +1,6 @@
 # Graph based agentic workflow 
 
-Google Agent Development Kit based Customer Support Bot Template
+Google Agent Development Kit based Customer Support Bot Template using google STT, custom agents, guardrails
 
 ## Installation
 

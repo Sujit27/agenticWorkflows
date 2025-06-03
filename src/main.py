@@ -38,12 +38,25 @@ initial_state = user_data
 session = session_service.create_session(app_name=APP_NAME, user_id=USER_ID,\
      session_id=SESSION_ID,state=initial_state)
 
-# Create a runner 
+# Initialize custom root agent, comment block and uncomment next to run skip custom agent
+root_agent = CustomerSupportAgent(
+                name="root_agent",
+                orchestrator=orchestrator_agent,
+                authenticator=authentication_agent,
+                )
+
 runner = Runner(
-    agent=orchestrator_agent,
+    agent=root_agent,
     app_name=APP_NAME,
     session_service=session_service
 )
+
+# # Create a runner, uncomment this to run orchestrator agent without custom 
+# runner = Runner(
+#     agent=orchestrator_agent,
+#     app_name=APP_NAME,
+#     session_service=session_service
+# )
 
 # Define Agent Interaction Logic ---
 async def call_agent(
