@@ -1,9 +1,10 @@
 fastapi==0.115.12
 langchain_core==0.3.63
-langchain_openai==0.3.18
-langgraph==0.4.7
+langchain_openai==0.3.19
+langgraph==0.4.8
 protobuf==6.31.1
 pydantic==2.11.5
 python-dotenv==1.1.0
+sounddevice==0.5.2
 streamlit==1.42.0
-typing_extensions==4.13.2
+typing_extensions==4.14.0
