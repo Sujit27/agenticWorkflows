@@ -9,7 +9,7 @@ from google.adk.sessions import InMemorySessionService
 from google.adk.tools.tool_context import ToolContext
 from google.genai import types
 from pydantic import BaseModel, Field
-#from api_keys import *
+from api_keys import *
 from config import *
 from agents import *
 
@@ -24,20 +24,20 @@ logging.basicConfig(
     filemode='w'
 )
 
-os.environ["GOOGLE_CLOUD_PROJECT"] = 'eci-ugi-digital-ccaipoc'
-os.environ["GOOGLE_CLOUD_LOCATION"] = 'us-central1'
+os.environ["GOOGLE_CLOUD_PROJECT"] = google_project_id
+os.environ["GOOGLE_CLOUD_LOCATION"] = google_project_region
 os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "TRUE"
-runner = None
+
 # Set up Session Management and Runners ---
 session_service = InMemorySessionService()
 
 # load initial user data
 initial_state = user_data
 
+# Create separate sessions 
+session = session_service.create_session(app_name=APP_NAME, user_id=USER_ID,\
+     session_id=SESSION_ID,state=initial_state)
 
-
-
-print(APP_NAME, USER_ID, SESSION_ID)
 # Initialize custom root agent, comment block and uncomment next to run skip custom agent
 root_agent = CustomerSupportAgent(
                 name="root_agent",
@@ -45,19 +45,11 @@ root_agent = CustomerSupportAgent(
                 authenticator=authentication_agent,
                 )
 
-async def setup_runner():
-    global runner
-    await session_service.create_session(
-        app_name=APP_NAME,
-        user_id=USER_ID,
-        session_id=SESSION_ID,
-        state=initial_state
-    )
-    runner = Runner(
-        agent=root_agent,
-        app_name=APP_NAME,
-        session_service=session_service
-    )
+runner = Runner(
+    agent=root_agent,
+    app_name=APP_NAME,
+    session_service=session_service
+)
 
 # # Create a runner, uncomment this to run orchestrator agent without custom 
 # runner = Runner(
@@ -89,7 +81,7 @@ async def call_agent(
         if event.content.parts[0].text:
             output_response += event.content.parts[0].text
 
-    final_session = await session_service.get_session(app_name=APP_NAME, 
+    final_session = session_service.get_session(app_name=APP_NAME, 
                                                 user_id=USER_ID, 
                                                 session_id=SESSION_ID)
     logging.info("Session State Snapshot:")
@@ -102,7 +94,6 @@ async def call_agent(
 
 #Run Interactions ---
 async def main():
-    await setup_runner()
     quit_condition = False
     while True:
         if quit_condition:
