@@ -30,6 +30,7 @@ os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "TRUE"
 
 # Set up Session Management and Runners ---
 session_service = InMemorySessionService()
+runner = None
 
 # load initial user data
 initial_state = user_data
@@ -45,11 +46,25 @@ root_agent = CustomerSupportAgent(
                 authenticator=authentication_agent,
                 )
 
-runner = Runner(
-    agent=root_agent,
-    app_name=APP_NAME,
-    session_service=session_service
-)
+async def setup_runner():
+    global runner
+    await session_service.create_session(
+        app_name=APP_NAME,
+        user_id=USER_ID,
+        session_id=SESSION_ID,
+        state=initial_state
+    )
+    runner = Runner(
+        agent=root_agent,
+        app_name=APP_NAME,
+        session_service=session_service
+    )
+
+# runner = Runner(
+#     agent=root_agent,
+#     app_name=APP_NAME,
+#     session_service=session_service
+# )
 
 # # Create a runner, uncomment this to run orchestrator agent without custom 
 # runner = Runner(
@@ -81,7 +96,7 @@ async def call_agent(
         if event.content.parts[0].text:
             output_response += event.content.parts[0].text
 
-    final_session = session_service.get_session(app_name=APP_NAME, 
+    final_session = await session_service.get_session(app_name=APP_NAME, 
                                                 user_id=USER_ID, 
                                                 session_id=SESSION_ID)
     logging.info("Session State Snapshot:")
@@ -94,6 +109,7 @@ async def call_agent(
 
 #Run Interactions ---
 async def main():
+    await setup_runner()
     quit_condition = False
     while True:
         if quit_condition:
